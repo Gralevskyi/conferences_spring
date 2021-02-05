@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Conferences</title>
+	</head>
+	
+	<body>
+		<p>Create topic</p>
+		<form method="POST" th:action="@{/moderator/report/create}" th:object="${reportDto}" id="reportForm">
+			<div>
+				<lable for="name">Name: </label>
+				<input type="text" th:field="*{name}"/>
+				<span class="validationError"
+					th:if="${#fields.hasErrors('name')}"
+					th:errors="*{name}">Name Error</span><br/>
+			
+				<select th:field="*{accepted}">
+				    <option th:value="true" th:text="true"></option>
+				    <option th:value="false" th:text="false"></option>
+				</select>
+			</div>
+			<div>
+				<select th:field="*{speaker}">
+	    			<option th:each="speaker : ${speakers}" th:value="${speaker.name}" th:text="${speaker.name}" th:selected:false>
+	    			</option>
+				</select>
+			</div>				
+			<input type="submit" value="Create report"/>
+		<form/><br/>
+		<br/>
+		<a href="/">Back to main page</a>
+	</body>
+</html>

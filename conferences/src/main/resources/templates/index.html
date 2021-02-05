@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Conferences</title>
+ <link rel="stylesheet" type="text/css" th:href="@{/static/css/custom.css}"/>
+ <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+	<div >
+	     <ul >
+	       <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" >Login</a></li>
+	       <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Register</a></li>
+	       <li sec:authorize="hasRole('ROLE_MODERATOR')"><a th:href="@{/moderator}">Moderator</a></li>
+	       <li sec:authorize="isAuthenticated()" sec:authentication="name"></li>
+	     </ul>
+	     <form  sec:authorize="isAuthenticated()" name="logoutForm" th:action="@{/logout}" method="post">
+		 	<input type="submit" value="Sign Out"/>
+		 </form> 
+	 </div>
+	 	 <form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/event/create}" method="GET">
+		 	<input type="submit" value="Add event"/>
+		 </form>
+		  <form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/report/create}" method="GET">
+		 	<input type="submit" value="Add report"/>
+		 </form> 
+		 <form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/speakers}" method="GET">
+		 	<input type="submit" value="Watch speakers"/>
+		 </form> 
+	</br>
+    <table>
+	    <thead>
+	        <tr>
+	            <th> Name </th>
+	            <th> Place </th>
+	            <th> Date </th>
+	            <th> Time </th>
+	            <td sec:authorize="hasRole('ROLE_MODERATOR')">Update</td>
+	        </tr>
+	    </thead>
+	    <tbody>
+	     	<tr th:if="${events.empty}">
+	            <td colspan="2"> No Events Available </td>
+	        </tr>
+	        <tr th:each="event : ${events}">
+	            <td><a th:href="@{eventdetails/{id}(id = ${event.id})}"><span th:text="${event.name}"> Name </span></a></td>
+	            <td><span th:text="${event.place}"> Place </span></td>
+	            <td><span th:text="${event.date}"> Date </span></td>
+	            <td><span th:text="${event.time}"> Time </span></td>
+	            <td sec:authorize="hasRole('ROLE_MODERATOR')"><a th:href="@{moderator/update/event/{id}(id = ${event.id})}">Update</a></td>
+	            <td sec:authorize="hasRole('ROLE_MODERATOR')"><a th:href="@{moderator/addreports/event/{id}(id = ${event.id})}">Add new reports</a></td>
+	        </tr>
+	     </tbody>
+	</table>
+
+</body>
+</html>

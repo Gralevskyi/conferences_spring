@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Text Parser</title>
+	</head>
+	
+	<body>
+		<h1>Register</h1>
+		
+		<form method="POST" th:action="@{/register}" th:object="${registrationForm}" id="registerForm">
+		
+			<lable for="username">Username: </label>
+			<input type="text" th:field="*{username}"/>
+			<span class="validationError"
+				th:if="${#fields.hasErrors('username')}"
+				th:errors="*{username}">Name Error</span><br/>
+		
+			<lable for="password">Password: </label>
+			<input type="password" th:field="*{password}"/>
+			<span class="validationError"
+				th:if="${#fields.hasErrors('password')}"
+				th:errors="*{password}">Name Error</span><br/>
+				
+			<lable for="passwordConfirmation">Comfirm password: </label>
+			<input type="password" th:field="*{passwordConfirmation}"/>
+			<span class="validationError"
+				th:if="${#fields.hasErrors('passwordConfirmation')}"
+				th:errors="*{passwordConfirmation}">Name Error</span><br/><br/>
+				
+			<input type="submit" value="Register"/>
+		<form/><br/>
+
+		<a href="/">Back to main page</a>
+	</body>
+
+</html>

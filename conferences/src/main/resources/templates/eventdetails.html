@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Conferences</title>
+</head>
+<body>
+	<p><span th:text="${event.name}"> Name </span></p>
+    <p><span th:text="${event.place}"> Place </span></p>
+    <p><span th:text="${event.date}"> Date </span></p>
+    <p><span th:text="${event.time}"> Time </span></p>
+	
+	<p>Reports: </p>
+	<table>
+	    <thead>
+	        <tr>
+	            <th> Topic </th>
+	            <th> Speaker </th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	     	<tr th:if="${event.reports.empty}">
+	            <td colspan="2"> No Reports Available </td>
+	        </tr>
+	        <tr th:each="report : ${event.reports}">
+	            <td><span th:text="${report.topic}"> Topic </span></td>
+	            <td><span th:text="${report.speaker.name}"> Speaker </span></td>
+	        </tr>
+	     </tbody>
+	</table>		
+		
+	<form sec:authorize="isAuthenticated()" method="post" th:action="@{/subscribe/{id}(id = ${event.id})}">
+		<button name="button">Subscribe</button>
+	</form>
+	<p sec:authorize="!isAuthenticated()">To subscribe you must <a th:href="@{/register}">register</a> or <a th:href="@{/login}">login</a></p>
+	<p>To <a th:href="@{/}">start</a>  page</p>
+</body>
+</html>

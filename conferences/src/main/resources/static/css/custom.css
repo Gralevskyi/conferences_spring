@@ -1,0 +1,21 @@
+.navbar ul {
+  list-style-type: none;
+  margin: 10;
+  padding: 0;
+}
+
+.navbar li {
+  display: inline;
+}
+
+.navbar form {
+  display: inline;
+}
+
+#eventForm {
+	display:inline-block;
+}
+
+#topicForm {
+	display:inline-block;
+}

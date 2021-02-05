@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Conferences</title>
+</head>
+<body>
+<p>Add topics</p>
+	<form method="POST" th:action="@{/moderator/addreports/event/{id}(id = ${event.id})}"  th:object="${event}" id="reports">
+        <ul>
+        	<li th:if="${reports.empty}">
+	            <p> No Reports Available </p>
+	        </li>
+            <li th:each="report : ${reports}">
+                <div>
+                    <input type="checkbox" th:field="*{reports}" th:value="${report.topic}">
+                    <label th:text="${report.topic}"></label>
+                </div>
+            </li>
+        </ul>
+        <input type="submit" value="Add reports"/>
+    </form>
+    </br>
+    <a href="/">Back to main page</a>
+</body>
+</html>

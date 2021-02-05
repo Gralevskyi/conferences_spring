@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Conferences</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/static/css/custom.css}"/>
+	</head>
+	
+	<body>
+		<h1>Create event</h1>
+
+			<form method="POST" th:action="@{/moderator/event/create}" th:object="${eventDto}" id="eventForm">
+		
+			<lable for="name">Name: </label>
+			<input type="text" th:field="*{name}"/>
+			<span class="validationError"
+				th:if="${#fields.hasErrors('name')}"
+				th:errors="*{name}">Name Error</span><br/>
+		
+			<lable for="place">Place: </label>
+			<input type="text" th:field="*{place}"/>
+			<span class="validationError"
+				th:if="${#fields.hasErrors('place')}"
+				th:errors="*{place}">Name Error</span><br/>
+				
+			<lable for="date">Date: </label>
+			<input type="date" th:text="${#temporals.format(localDate, 'yyyy-MM-dd')}" th:field="*{date}"/>
+			<span class="validationError"
+				th:if="${#fields.hasErrors('date')}"
+				th:errors="*{date}">Name Error</span><br/>
+				
+			<lable for="time">Time: </label>
+			<input type="time" th:text="${#temporals.format(localTime, 'HH-mm')}" th:field="*{time}"/>
+			<span class="validationError"
+				th:if="${#fields.hasErrors('time')}"
+				th:errors="*{time}">Name Error</span><br/>
+				
+			<input type="submit" value="Create event"/>
+		<form/>
+		<br/>
+		<a href="/">Back to main page</a>
+	</body>
+</html>
