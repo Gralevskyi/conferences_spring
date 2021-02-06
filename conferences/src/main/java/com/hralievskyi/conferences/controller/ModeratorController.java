@@ -17,19 +17,26 @@ import com.hralievskyi.conferences.dto.EventDto;
 import com.hralievskyi.conferences.dto.ReportDto;
 import com.hralievskyi.conferences.entity.Event;
 import com.hralievskyi.conferences.entity.Report;
+import com.hralievskyi.conferences.entity.user.Speaker;
 import com.hralievskyi.conferences.service.EventService;
 import com.hralievskyi.conferences.service.ModeratorService;
+import com.hralievskyi.conferences.service.ReportService;
+import com.hralievskyi.conferences.service.SpeakerService;
 
 @Controller
 @RequestMapping("/moderator")
 public class ModeratorController {
 	private ModeratorService moderatorService;
 	private EventService eventService;
+	private SpeakerService speakerService;
+	private ReportService reportService;
 
 	@Autowired
-	public ModeratorController(ModeratorService moderatorService, EventService eventService) {
+	public ModeratorController(ModeratorService moderatorService, EventService eventService, SpeakerService speakerService, ReportService reportService) {
 		this.eventService = eventService;
 		this.moderatorService = moderatorService;
+		this.speakerService = speakerService;
+		this.reportService = reportService;
 	}
 
 	@GetMapping("/event/create")
@@ -51,7 +58,7 @@ public class ModeratorController {
 	@GetMapping("/report/create")
 	public String createReport(Model model) {
 		model.addAttribute("reportDto", new ReportDto());
-		model.addAttribute("speakers", moderatorService.getAllSpeakers());
+		model.addAttribute("speakers", speakerService.getAll());
 		return "createreport";
 	}
 
@@ -59,6 +66,7 @@ public class ModeratorController {
 	public String createEvent(Model model, @Valid ReportDto reportDto, Errors errors) {
 		if (errors.hasErrors()) {
 			model.addAttribute("reportDto", reportDto);
+			model.addAttribute("speakers", speakerService.getAll());
 			return "createreport";
 		}
 		moderatorService.createReport(reportDto.toReport());
@@ -80,22 +88,49 @@ public class ModeratorController {
 		if (event.isPresent()) {
 			model.addAttribute("event", event.get());
 		}
-		return "eventupdate";
+		return "redirect:/update/event/" + eventid;
 	}
 
 	@GetMapping("/addreports/event/{id}")
 	public String getReportsForAdding(Model model, @PathVariable(value = "id") long eventid) {
 		Event event = new Event(eventid);
-		Iterable<Report> reports = moderatorService.findFreeEventReports();
+		Iterable<Report> reports = reportService.findAcceptedFreeOfEvent();
 		model.addAttribute("event", event);
 		model.addAttribute("reports", reports);
 		return "addreports";
 	}
 
 	@PostMapping("/addreports/event/{id}")
-	public String addReportsTo(Model model, Event event) {
+	public String addReportsToEvent(Event event, @PathVariable(value = "id") long eventid) {
 		eventService.addNewReports(event);
-		return "redirect:/";
+		return "redirect:/addreports/event/" + eventid;
+	}
+
+	@GetMapping("/speakers")
+	public String getAllSpeakers(Model model) {
+		model.addAttribute("speakers", speakerService.getAll());
+		return "speakers";
+	}
+
+	@GetMapping("/addreports/speaker/{speakername}")
+	public String speakerAddReports(Model model, @PathVariable(value = "speakername") String speakername) {
+		Iterable<Report> reports = reportService.findFreeOfSpeaker();
+		Speaker speaker = new Speaker(speakername);
+		model.addAttribute("speaker", speaker);
+		model.addAttribute("reports", reports);
+		return "add_rep_speaker";
+	}
+
+	@PostMapping("/addreports/speaker/{name}")
+	public String addReportsToSpeaker(Model model, Speaker speaker) {
+		speakerService.addNewReports(speaker);
+		return "redirect:/speakers";
+	}
+
+	@GetMapping("/reports")
+	public String getAllReports(Model model) {
+		model.addAttribute("reports", reportService.findAll());
+		return "reports";
 	}
 
 }

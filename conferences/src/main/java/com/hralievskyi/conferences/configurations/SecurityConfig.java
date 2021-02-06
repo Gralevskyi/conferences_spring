@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/secured").hasRole("CUSTOMER").antMatchers("/speaker").hasRole("SPEAKER").antMatchers("/moderator/**").hasRole("MODERATOR")
+		http.authorizeRequests().antMatchers("/speaker").hasRole("SPEAKER").antMatchers("/moderator/**").hasRole("MODERATOR")
 				// permitted for all
 				.antMatchers("/", "/**").permitAll()
 				// login page

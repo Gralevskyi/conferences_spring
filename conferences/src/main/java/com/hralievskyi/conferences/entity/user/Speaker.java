@@ -42,4 +42,10 @@ public class Speaker {
 		this.id = id;
 		this.name = name;
 	}
+
+	public Set<Report> addReports(Set<Report> newReports) {
+		this.reports.addAll(newReports);
+		return this.reports;
+
+	}
 }

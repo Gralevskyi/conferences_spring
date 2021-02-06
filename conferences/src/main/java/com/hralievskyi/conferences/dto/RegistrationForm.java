@@ -1,6 +1,6 @@
 package com.hralievskyi.conferences.dto;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 import com.hralievskyi.conferences.constraints.PasswordConfirmationCheck;
@@ -13,7 +13,7 @@ import com.sun.istack.NotNull;
 @PasswordConfirmationCheck(first = "passwordConfirmation", second = "password")
 public class RegistrationForm {
 
-	@NotBlank(message = "Name is required")
+	@Email(message = "Email should be valid")
 	@UniqueUsername
 	private String username;
 

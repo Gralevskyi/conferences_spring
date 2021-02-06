@@ -19,13 +19,13 @@ import com.hralievskyi.conferences.repository.UserRepository;
 @Service
 public class EventService {
 	private EventRepository eventRepo;
-	private ReportRepository reportcRepo;
+	private ReportRepository reportRepo;
 	private UserRepository userRepo;
 
 	@Autowired
-	public EventService(EventRepository eventRepo, ReportRepository topicRepo, UserRepository userRepo) {
+	public EventService(EventRepository eventRepo, ReportRepository reportRepo, UserRepository userRepo) {
 		this.eventRepo = eventRepo;
-		this.reportcRepo = topicRepo;
+		this.reportRepo = reportRepo;
 		this.userRepo = userRepo;
 	}
 
@@ -33,11 +33,15 @@ public class EventService {
 		return eventRepo.findAll();
 	}
 
+	public List<Event> findFuture() {
+		return eventRepo.findFuture();
+	}
+
 	@Transactional
 	public Optional<Event> findByIdWithTopics(long id) {
 		Optional<Event> event = eventRepo.findById(id);
 		if (event.isPresent()) {
-			Iterable<Report> itrTopics = reportcRepo.findByEventid(id);
+			Iterable<Report> itrTopics = reportRepo.findByEventid(id);
 			List<Report> reports = StreamSupport.stream(itrTopics.spliterator(), false).collect(Collectors.toList());
 			event.get().setReports(reports);
 		}

@@ -54,20 +54,6 @@ public class ModeratorService {
 		return reportRepo.save(report);
 	}
 
-	public Iterable<Speaker> getAllSpeakers() {
-		return speakerRepo.findAll();
-	}
-
-	@Transactional
-	public boolean appointSpeaker(String speakername, String topicname) {
-		Speaker speaker = speakerRepo.findByName(speakername);
-		Report report = reportRepo.findByTopic(topicname);
-		report.setSpeaker(speaker);
-		report.setAccepted(true);
-		reportRepo.save(report);
-		return true;
-	}
-
 	@Transactional
 	public boolean suggestTopic(String topicname, String speakername) {
 		Speaker speaker = speakerRepo.findByName(speakername);
@@ -76,10 +62,6 @@ public class ModeratorService {
 		report.setAccepted(false);
 		reportRepo.save(report);
 		return true;
-	}
-
-	public Iterable<Report> findFreeEventReports() {
-		return reportRepo.findAllFreeEventReports();
 	}
 
 	public boolean changeEventTimeTo(Date datetime) {

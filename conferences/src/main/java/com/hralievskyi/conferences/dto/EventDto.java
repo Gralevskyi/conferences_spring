@@ -3,6 +3,7 @@ package com.hralievskyi.conferences.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -31,6 +32,7 @@ public class EventDto {
 	String place;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Future
 	LocalDate date;
 
 	@DateTimeFormat(pattern = "HH:mm")

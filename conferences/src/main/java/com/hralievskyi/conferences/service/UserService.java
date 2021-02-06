@@ -27,7 +27,7 @@ public class UserService {
 	public void save(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		Set<Role> roles = new HashSet<>();
-		roles.add(roleRepo.findByName("ROLE_CUSTOMER"));
+		roles.add(roleRepo.findByName("ROLE_USER"));
 		user.setRoles(roles);
 		userRepo.save(user);
 	}

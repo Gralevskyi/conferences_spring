@@ -12,8 +12,11 @@ public interface ReportRepository extends JpaRepository<Report, String> {
 	Iterable<Report> findByEventid(long id);
 
 	@Query(value = "SELECT t.* FROM reports t where t.speaker is null", nativeQuery = true)
-	Iterable<Report> findAllFreeSpeakerReports();
+	Iterable<Report> findFreeOfSpeaker();
 
 	@Query(value = "SELECT t.* FROM reports t LEFT JOIN event_reports et on t.topic = et.report_topic WHERE et.report_topic is null", nativeQuery = true)
-	Iterable<Report> findAllFreeEventReports();
+	Iterable<Report> findFreeOfEvent();
+
+	@Query(value = "SELECT t.* FROM reports t LEFT JOIN event_reports et on t.topic = et.report_topic WHERE et.report_topic is null AND t.speaker is not null and t.accepted = 1", nativeQuery = true)
+	Iterable<Report> findAcceptedFreeOfEvent();
 }

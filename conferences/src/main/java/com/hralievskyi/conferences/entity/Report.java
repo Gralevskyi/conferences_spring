@@ -34,7 +34,7 @@ public class Report {
 	private boolean accepted;
 
 	@ManyToOne
-	@JoinColumn(name = "speaker")
+	@JoinColumn(name = "speaker", nullable = true)
 	private Speaker speaker;
 
 	public Report(String topic) {

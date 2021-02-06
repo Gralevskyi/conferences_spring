@@ -7,7 +7,7 @@
 	
 	<body>
 		<h1>Update event</h1>
-		<form method="POST" th:action="@{/event/update/{id}(id = ${event.id})}" th:object="${event}" id="event">
+		<form method="POST" th:action="@{/moderator/update/event/{id}(id = ${event.id})}" th:object="${event}" id="event">
 			<lable for="name">id: </label>
 			<p><span id="eventid" th:text="${id}"> Id </span></p>
 			<lable for="name">Name: </label>

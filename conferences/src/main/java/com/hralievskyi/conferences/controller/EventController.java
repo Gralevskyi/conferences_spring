@@ -26,7 +26,7 @@ public class EventController {
 
 	@GetMapping
 	public String getMainpage(Model model) {
-		model.addAttribute("events", eventService.findAll());
+		model.addAttribute("events", eventService.findFuture());
 		return "index";
 	}
 
