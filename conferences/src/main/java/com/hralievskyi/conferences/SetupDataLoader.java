@@ -57,6 +57,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		roles.add(custRole);
 		user.setRoles(roles);
 		userRepository.save(user);
+		moderatorService.createSpeaker(user);
 
 		Set<Role> spRoles = new HashSet<>(roles);
 		spRoles.remove(adminRole);
@@ -81,22 +82,22 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		User createdUserC = userRepository.save(speakerC);
 		moderatorService.createSpeaker(createdUserC);
 
-		Report report = new Report("Object Oriented Programming");
+		Report report = new Report("Object Oriented Programming", "admin@mail.com");
 		moderatorService.createReport(report);
 
-		Report report1 = new Report("Java fundamentals");
+		Report report1 = new Report("Java fundamentals", "admin@mail.com");
 		moderatorService.createReport(report1);
 
-		Report report2 = new Report("Sprint JPA");
+		Report report2 = new Report("Sprint JPA", "admin@mail.com");
 		moderatorService.createReport(report2);
 
-		Report report3 = new Report("Spring Security");
+		Report report3 = new Report("Spring Security", "admin@mail.com");
 		moderatorService.createReport(report3);
 
-		Report report4 = new Report("XML fundamentals");
+		Report report4 = new Report("XML fundamentals", "admin@mail.com");
 		moderatorService.createReport(report4);
 
-		Report report5 = new Report("HTML and CSS");
+		Report report5 = new Report("HTML and CSS", "admin@mail.com");
 		moderatorService.createReport(report5);
 
 		alreadySetup = true;

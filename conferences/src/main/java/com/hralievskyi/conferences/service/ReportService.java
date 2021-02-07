@@ -52,7 +52,14 @@ public class ReportService {
 
 	public void clearSpeaker(Set<Report> reports) {
 		reports.forEach(report -> report.setSpeaker(null));
-		reports.forEach(report -> System.err.println(report.getSpeaker().getId()));
 		reportRepo.saveAll(reports);
+	}
+
+	public Iterable<Report> setSpeakerReportsToNull(Iterable<Report> reports) {
+		reports.forEach(report -> {
+			if (report.getSpeaker() != null)
+				report.getSpeaker().setReports(null);
+		});
+		return reports;
 	}
 }

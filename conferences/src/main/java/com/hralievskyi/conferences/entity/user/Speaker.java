@@ -38,6 +38,10 @@ public class Speaker {
 		this.name = name;
 	}
 
+	public Speaker(long id) {
+		this.id = id;
+	}
+
 	public Speaker(long id, String name) {
 		this.id = id;
 		this.name = name;
@@ -46,6 +50,5 @@ public class Speaker {
 	public Set<Report> addReports(Set<Report> newReports) {
 		this.reports.addAll(newReports);
 		return this.reports;
-
 	}
 }

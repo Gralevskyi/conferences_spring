@@ -34,7 +34,9 @@
 			 <form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/reports}" method="GET">
 			 	<input type="submit" value="Watch reports"/>
 			 </form>
-	
+			 <form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/pastevents}" method="GET">
+			 	<input type="submit" value="Watch Past Events"/>
+			 </form>
 		</br>
 	    <table>
 		    <thead>
@@ -42,23 +44,35 @@
 		            <th> Name </th>
 		            <th> Place </th>
 		            <th> Date </th>
+		            <th> Report count </th>
 		            <th sec:authorize="hasRole('ROLE_MODERATOR')">Update</th>
 		            <th sec:authorize="hasRole('ROLE_MODERATOR')">Add new reports</th>
 		        </tr>
 		    </thead>
 		    <tbody>
-		     	<tr th:if="${events.empty}">
+		     	<tr th:if="${eventPage.content.empty}">
 		            <td colspan="2"> No Events Available </td>
 		        </tr>
-		        <tr th:each="event : ${events}">
+		        <tr th:each="event : ${eventPage.content}">
 		            <td><a th:href="@{eventdetails/{id}(id = ${event.id})}"><span th:text="${event.name}"> Name </span></a></td>
 		            <td><span th:text="${event.place}"> Place </span></td>
 		            <td><span th:text="${event.date}"> Date </span></td>
-		            <td sec:authorize="hasRole('ROLE_MODERATOR')"><a th:href="@{moderator/update/event/{id}(id = ${event.id})}">Update</a></td>
-		            <td sec:authorize="hasRole('ROLE_MODERATOR')"><a th:href="@{moderator/addreports/event/{id}(id = ${event.id})}">Add new reports</a></td>
+		            <td>
+						<span th:with="convertedList=${#lists.toList(event.reports)}">
+    						<span th:text="${#lists.size(convertedList)}"/>
+						</span>
+					</td>
+		            <td sec:authorize="hasRole('ROLE_MODERATOR')"><a th:href="@{/moderator/update/event/{id}(id = ${event.id})}">Update</a></td>
+		            <td sec:authorize="hasRole('ROLE_MODERATOR')"><a th:href="@{/moderator/addreports/event/{id}(id = ${event.id})}">Add new reports</a></td>
 		        </tr>
 		     </tbody>
 		</table>
-	
+		<div th:if="${eventPage.totalPages > 0}"
+		    th:each="pageNumber : ${pageNumbers}">
+		    <a th:href="@{/(size=${eventPage.size}, page=${pageNumber})}"
+		        th:text=${pageNumber}
+		        th:class="${pageNumber==eventPage.number + 1} ? active"></a>
+		</div>
+			
 	</body>
 </html>

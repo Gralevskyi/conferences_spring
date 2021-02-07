@@ -1,11 +1,16 @@
 package com.hralievskyi.conferences.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +40,33 @@ public class EventService {
 
 	public List<Event> findFuture() {
 		return eventRepo.findFuture();
+	}
+
+	public List<Event> findPast() {
+		return eventRepo.findPast();
+	}
+
+	public List<Event> findPastBySpeakerName(String speakername) {
+		return eventRepo.findPastBySpeakerName(speakername);
+	}
+
+	public Page<Event> findPaginated(Pageable pageable) {
+		List<Event> events = eventRepo.findFuture();
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		int startItem = currentPage * pageSize;
+		List<Event> list;
+
+		if (events.size() < startItem) {
+			list = Collections.emptyList();
+		} else {
+			int toIndex = Math.min(startItem + pageSize, events.size());
+			list = events.subList(startItem, toIndex);
+		}
+
+		Page<Event> eventPage = new PageImpl<Event>(list, PageRequest.of(currentPage, pageSize), events.size());
+
+		return eventPage;
 	}
 
 	@Transactional

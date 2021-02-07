@@ -31,6 +31,9 @@ public class Report {
 	@Size(min = 5, max = 50, message = "Report topic name must be at least 5 and maximum 50 characters long")
 	private String topic;
 
+	@NotNull
+	private String creator;
+
 	private boolean accepted;
 
 	@ManyToOne
@@ -41,10 +44,9 @@ public class Report {
 		this.topic = topic;
 	}
 
-	public Report(String topic, boolean accepted, String speaker) {
+	public Report(String topic, String author) {
 		this.topic = topic;
-		this.accepted = accepted;
-		this.speaker = new Speaker(speaker);
+		this.creator = author;
 	}
 
 }

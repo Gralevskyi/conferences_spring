@@ -1,5 +1,7 @@
 package com.hralievskyi.conferences.controller;
 
+import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -56,17 +58,17 @@ public class ModeratorController {
 	}
 
 	@GetMapping("/report/create")
-	public String createReport(Model model) {
-		model.addAttribute("reportDto", new ReportDto());
-		model.addAttribute("speakers", speakerService.getAll());
+	public String createReport(Model model, Principal principal) {
+		model.addAttribute("reportDto", new ReportDto(principal.getName()));
+		model.addAttribute("speakers", speakerService.getAllDto());
 		return "createreport";
 	}
 
 	@PostMapping("/report/create")
-	public String createEvent(Model model, @Valid ReportDto reportDto, Errors errors) {
+	public String createReport(Model model, @Valid ReportDto reportDto, Errors errors) {
 		if (errors.hasErrors()) {
 			model.addAttribute("reportDto", reportDto);
-			model.addAttribute("speakers", speakerService.getAll());
+			model.addAttribute("speakers", speakerService.getAllDto());
 			return "createreport";
 		}
 		moderatorService.createReport(reportDto.toReport());
@@ -94,16 +96,15 @@ public class ModeratorController {
 	@GetMapping("/addreports/event/{id}")
 	public String getReportsForAdding(Model model, @PathVariable(value = "id") long eventid) {
 		Event event = new Event(eventid);
-		Iterable<Report> reports = reportService.findAcceptedFreeOfEvent();
 		model.addAttribute("event", event);
-		model.addAttribute("reports", reports);
+		model.addAttribute("reports", reportService.setSpeakerReportsToNull(reportService.findAcceptedFreeOfEvent()));
 		return "addreports";
 	}
 
 	@PostMapping("/addreports/event/{id}")
 	public String addReportsToEvent(Event event, @PathVariable(value = "id") long eventid) {
 		eventService.addNewReports(event);
-		return "redirect:/addreports/event/" + eventid;
+		return "redirect:/moderator/addreports/event/" + eventid;
 	}
 
 	@GetMapping("/speakers")
@@ -129,8 +130,15 @@ public class ModeratorController {
 
 	@GetMapping("/reports")
 	public String getAllReports(Model model) {
-		model.addAttribute("reports", reportService.findAll());
+		model.addAttribute("reports", reportService.setSpeakerReportsToNull(reportService.findAll()));
 		return "reports";
+	}
+
+	@GetMapping("/pastevents")
+	public String getMainpage(Model model) {
+		List<Event> events = eventService.findPast();
+		model.addAttribute("events", events);
+		return "past_events";
 	}
 
 }

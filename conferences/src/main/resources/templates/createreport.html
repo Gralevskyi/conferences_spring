@@ -5,23 +5,20 @@
 		<title>Conferences</title>
 	</head>
 	
-	<body>
+	<body onload="addEmptyOption()">
 		<p>Create topic</p>
 		<form method="POST" th:action="@{/moderator/report/create}" th:object="${reportDto}" id="reportForm">
 			<div>
-				<lable for="name">Name: </label>
-				<input type="text" th:field="*{name}"/>
+				<lable for="topic">Topic: </label>
+				<input type="text" th:field="*{topic}"/>
 				<span class="validationError"
-					th:if="${#fields.hasErrors('name')}"
-					th:errors="*{name}">Name Error</span><br/>
-			
-				<select th:field="*{accepted}">
-				    <option th:value="true" th:text="true"></option>
-				    <option th:value="false" th:text="false"></option>
-				</select>
+					th:if="${#fields.hasErrors('topic')}"
+					th:errors="*{topic}">Name Error</span><br/>			
+				<input type="hidden" th:field="*{accepted}" id="accepted">
+				<input type="hidden" th:field="*{creator}" id="creator">
 			</div>
 			<div>
-				<select th:field="*{speaker}">
+				<select th:field="*{speaker}" id="speakers_select">
 	    			<option th:each="speaker : ${speakers}" th:value="${speaker.name}" th:text="${speaker.name}" th:selected:false>
 	    			</option>
 				</select>
@@ -30,5 +27,6 @@
 		<form/><br/>
 		<br/>
 		<a href="/">Back to main page</a>
+		<script th:src="@{/static/js/custom.js}"></script>
 	</body>
 </html>
