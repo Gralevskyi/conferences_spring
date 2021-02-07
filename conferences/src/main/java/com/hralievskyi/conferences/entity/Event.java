@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,6 +47,7 @@ public class Event {
 	String place;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "date", columnDefinition = "DATE")
 	LocalDate date;
 
 	@DateTimeFormat(pattern = "HH:mm")

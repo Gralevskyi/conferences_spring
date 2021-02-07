@@ -30,10 +30,16 @@
 	     </tbody>
 	</table>		
 		
-	<form sec:authorize="isAuthenticated()" method="post" th:action="@{/subscribe/{id}(id = ${event.id})}">
-		<button name="button">Subscribe</button>
-	</form>
-	<p sec:authorize="!isAuthenticated()">To subscribe you must <a th:href="@{/register}">register</a> or <a th:href="@{/login}">login</a></p>
+	<p sec:authorize="isAuthenticated()" th:if="${alreadySubsribed}" style="color:red"><span th:text="${errorMessage}">Error message</span></p>
+	<p sec:authorize="isAuthenticated()" th:if="${!event.date.isAfter(#temporals.createToday())}">Event has passed </p>
+	<div th:if="${!alreadySubsribed}">
+		<form th:if="${event.date.isAfter(#temporals.createToday())}" sec:authorize="isAuthenticated()" method="post" th:action="@{/subscribe/{id}(id = ${event.id})}">
+			<button name="button">Subscribe</button>
+		</form>
+	</div>
+
+
+	<p sec:authorize="!isAuthenticated()">To subscribe you may <a th:href="@{/register}">register</a> or <a th:href="@{/login}">login</a></p>
 	<p>To <a th:href="@{/}">start</a>  page</p>
 </body>
 </html>

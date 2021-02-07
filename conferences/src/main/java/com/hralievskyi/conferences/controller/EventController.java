@@ -1,7 +1,6 @@
 package com.hralievskyi.conferences.controller;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -9,6 +8,7 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hralievskyi.conferences.entity.Event;
 import com.hralievskyi.conferences.service.EventService;
+import com.hralievskyi.conferences.util.AlreadySubscribed;
 
 @Controller
 @RequestMapping("/")
@@ -30,33 +31,20 @@ public class EventController {
 		this.eventService = eventService;
 	}
 
-	/*
-	 * @GetMapping public String getMainpage(Model model) {
-	 * model.addAttribute("events", eventService.findFuture()); return "index"; }
-	 */
-
 	@GetMapping
-	public String listEvents(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
-		int currentPage = page.orElse(1);
-		int pageSize = size.orElse(4);
-
-		Page<Event> eventPage = eventService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
-
+	public String listEvents(Model model, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "4") Integer size, @RequestParam(defaultValue = "date") String sortBy) {
+		Page<Event> eventPage = eventService.findPaginated(PageRequest.of(page - 1, size, Sort.by(sortBy)));
 		model.addAttribute("eventPage", eventPage);
-
-		int totalPages = eventPage.getTotalPages();
-		if (totalPages > 0) {
-			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-			model.addAttribute("pageNumbers", pageNumbers);
-		}
-
+		model.addAttribute("pageNumbers", IntStream.rangeClosed(1, eventPage.getTotalPages()).boxed().collect(Collectors.toList()));
 		return "index";
 	}
 
 	@GetMapping("/eventdetails/{id}")
-	public String getEventDetails(Model model, @PathVariable(value = "id") long eventid) {
+	public String getEventDetails(Model model, @PathVariable(value = "id") long eventid, Principal principal) {
 		Optional<Event> event = eventService.findByIdWithTopics(eventid);
 		if (event.isPresent()) {
+			model.addAttribute("errorMessage", "");
+			model.addAttribute("alreadySubsribed", false);
 			model.addAttribute("event", event.get());
 		}
 		return "eventdetails";
@@ -64,7 +52,17 @@ public class EventController {
 
 	@PostMapping("/subscribe/{id}")
 	public String subscribeToEvent(Model model, @PathVariable(value = "id") long eventid, Principal principal) {
-		eventService.subscribeUser(principal.getName(), eventid);
+		try {
+			eventService.subscribeUser(principal.getName(), eventid);
+		} catch (AlreadySubscribed ex) {
+			Optional<Event> event = eventService.findByIdWithTopics(eventid);
+			if (event.isPresent()) {
+				model.addAttribute("errorMessage", ex.getMessage());
+				model.addAttribute("alreadySubsribed", true);
+				model.addAttribute("event", event.get());
+			}
+			return "eventdetails";
+		}
 		return "redirect:/";
 	}
 
