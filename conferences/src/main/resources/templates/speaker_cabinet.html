@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+	<head th:insert="fragments.html :: styles_and_scripts"></head>
+	<body>
+		<header th:insert="fragments.html :: header"> </header>
+			<ul class="navbar">
+				<form  th:action="@{/speaker/pastevents}" method="GET">
+			 		<input type="submit" value="Watch my past events"/>
+				</form>
+				<form  th:action="@{/speaker/create}" method="GET">
+				 	<input type="submit" value="Create report"/>
+				</form>
+			</ul>
+			
+			
+			<p>My accepted topics<p>
+			<ul th:each="report : ${reports}">
+				<li th:if="${reports.empty}">Accepted reports are not available</li>
+				<li th:if="${report.accepted}"><span th:text="${report.topic}">Report topic</span></li>
+			</ul>
+		
+			<p>My not accepted topics</p>
+			<form method="POST" th:action="@{/speaker/reports}"  th:object="${speaker}" id="reports">
+		        <ul>
+		            <li th:if="${!report.accepted}" th:each="report : ${reports}">
+		                <div>
+		                    <input type="checkbox" th:field="*{reports}" th:value="${report.topic}">
+		                    <label th:text="${report.topic}"></label>
+		                </div>
+		            </li>
+		        </ul>
+		        <button type="submit" name="action" value="accept">Accept</button>
+		    	<button type="submit" name="action" value="refuse">Refuse</button>
+		    </form>
+		    <script th:src="@{/static/js/custom.js}"></script>
+	</body>
+</html>

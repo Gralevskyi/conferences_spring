@@ -1,0 +1,68 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Conferences</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/static/css/custom.css}"/>
+		<script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+		<script src="/webjars/bootstrap/4.6.0/js/bootstrap.min.js"></script>
+	</head>
+	<body>	
+		
+		<div th:fragment="header">
+		     <ul class="navbar">
+		      <li>
+		       		<form th:action="@{/}" method="GET">
+			 			<input type="submit" th:value="#{index.header.mainpage}"/>
+			 		</form>
+		       </li>	
+			   <li>
+		       		<form  sec:authorize="hasRole('ROLE_SPEAKER')" th:action="@{/speaker}" method="GET">
+			 			<input type="submit" th:value="#{index.header.speakercabint}"/>
+			 		</form>
+		       </li>		       
+		       <li>
+		       		<form  sec:authorize="hasRole('ROLE_USER')" th:action="@{/user}" method="GET">
+			 			<input type="submit" th:value="#{index.header.usercabint}"/>
+			 		</form>
+		       </li>	       
+		       <li sec:authorize="isAuthenticated()">
+		       		<form   name="logoutForm" th:action="@{/logout}" method="post">
+			 			<input type="submit" th:value="#{index.header.signout}"/>
+			 		</form> 
+		       </li>
+		       <li sec:authorize="!isAuthenticated()">
+		       		<form   name="logoutForm" th:action="@{/login}" method="get">
+			 			<input type="submit" th:value="#{index.header.login}"/>
+			 		</form> 
+		       </li>
+		       	<li sec:authorize="!isAuthenticated()">
+		       		<form   name="logoutForm" th:action="@{/register}" method="get">
+			 			<input type="submit" th:value="#{index.header.register}"/>
+			 		</form> 
+		       </li>
+		       <!--  
+		       <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" >Login</a></li>
+		       <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Register</a></li>
+		       -->
+		       <li id= "username" sec:authorize="isAuthenticated()" sec:authentication="name"></li>
+		       <li>
+		       	   <span th:text="#{lang.change}"></span>:
+			       <select id="locales">
+					    <option value=""></option>
+					    <option value="en" th:text="#{lang.eng}"></option>
+					    <option value="uk" th:text="#{lang.ukr}"></option>
+					</select>
+			   </li>
+		     </ul>
+		 </div>
+		 
+		 <div th:fragment="styles_and_scripts">
+		 	<title>Conferences</title>
+			<link rel="stylesheet" type="text/css" th:href="@{/static/css/custom.css}"/>
+			<script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+			<script src="/webjars/bootstrap/4.6.0/js/bootstrap.min.js"></script>
+		 </div>
+	</body>
+</html>		 
+
+		 

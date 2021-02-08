@@ -51,6 +51,7 @@ public class Event {
 	LocalDate date;
 
 	@DateTimeFormat(pattern = "HH:mm")
+	@Column(name = "time", columnDefinition = "TIME")
 	LocalTime time;
 
 	@OneToMany

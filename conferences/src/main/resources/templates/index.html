@@ -9,27 +9,27 @@
 		 	<ul class="navbar">
 		 		<li>
 		       		<form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/event/create}" method="GET">
-			 			<input type="submit" value="Add event"/>
+			 			<input type="submit" th:value="#{index.moderator.createevent}"/>
 			 		</form>
 		       </li>
 		       <li>
 		       		<form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/report/create}" method="GET">
-			 			<input type="submit" value="Add report"/>
+			 			<input type="submit" th:value="#{index.moderator.createreport}"/>
 			 		</form> 
 		       </li>
 		       <li>
 		       		<form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/speakers}" method="GET">
-			 			<input type="submit" value="Watch speakers"/>
+			 			<input type="submit" th:value="#{index.moderator.watchspeakers}"/>
 			 		</form>
 		       </li>
 		       <li>
 		       		<form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/reports}" method="GET">
-			 			<input type="submit" value="Watch reports"/>
+			 			<input type="submit" th:value="#{index.moderator.watchreports}"/>
 			 		</form>
 		       </li>
 		       <li>
 		       		<form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/pastevents}" method="GET">
-			 			<input type="submit" value="Watch Past Events"/>
+			 			<input type="submit" th:value="#{index.moderator.watchpastevents}"/>
 			 		</form>
 		       </li>	
 		 	</ul>
@@ -60,8 +60,8 @@
     						<span th:text="${#lists.size(convertedList)}"/>
 						</span>
 					</td>
-		            <td sec:authorize="hasRole('ROLE_MODERATOR')"><a th:href="@{/moderator/update/event/{id}(id = ${event.id})}">Update</a></td>
-		            <td sec:authorize="hasRole('ROLE_MODERATOR')"><a th:href="@{/moderator/addreports/event/{id}(id = ${event.id})}">Add new reports</a></td>
+		            <td sec:authorize="hasRole('ROLE_MODERATOR')"><a th:href="@{/moderator/update/event/{id}(id = ${event.id})}" th:text="#{index.table.update}">Update</a></td>
+		            <td sec:authorize="hasRole('ROLE_MODERATOR')"><a th:href="@{/moderator/addreports/event/{id}(id = ${event.id})}" th:text="#{index.table.addreports}">Add new reports</a></td>
 		        </tr>
 		     </tbody>
 		</table>

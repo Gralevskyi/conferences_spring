@@ -47,8 +47,8 @@ public class EventService {
 		return Optional.ofNullable(eventRepo.findPastBySpeakerName(speakername)).orElse(new ArrayList<Event>());
 	}
 
-	public Page<Event> findPaginated(Pageable pageable) {
-		return Optional.ofNullable(eventRepo.findAll(pageable)).orElse(Page.empty());
+	public Page<Event> findFuturePaginated(Pageable pageable) {
+		return Optional.ofNullable(eventRepo.findFuture(pageable)).orElse(Page.empty());
 	}
 
 	public List<Event> findByUsername(String username) {

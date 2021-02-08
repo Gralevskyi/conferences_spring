@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+	<head>
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+	<div th:insert="fragments.html :: styles_and_scripts"></div>
+	
+	</head>
+	<body onload="downloadSpeakers()">
+		<header th:insert="fragments.html :: header"> </header>
+
+		<table id="topictable">
+			<thead>
+				<tr>
+					<th> Topic </th>
+					<th> Creator </th>
+					<th> Is Accepted </th>
+					<th> Speaker </th>
+					<th> Set Accepted </th>
+					<th> Set new Speaker </th>
+					<th> Update </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="report : ${reports}">
+					<td><span th:text="${report.topic}"> Topic </span></td>
+					<td><span th:text="${report.creator}"> Topic </span></td>
+					<td><span th:text="${report.accepted}"> Accepted </span></td>
+					<td><span th:text="${report.speaker} ? ${report.speaker.name} : 'Absent'">Speaker</span></td>
+					<td>
+						<select>
+							<option><span th:text="${report.accepted}"> Accepted </span></option>
+							<option><span th:text="${!report.accepted}"> Accepted </span></option>
+						</select>
+					</td>
+					<td class="speakers"></td>
+					<td>
+						<div>
+							<button th:onclick="updateReport(this)">Update</button>								
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<script th:src="@{/static/js/custom.js}"></script>
+	</body>
+</html>

@@ -33,7 +33,7 @@ public class EventController {
 
 	@GetMapping
 	public String listEvents(Model model, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "4") Integer size, @RequestParam(defaultValue = "date") String sortBy) {
-		Page<Event> eventPage = eventService.findPaginated(PageRequest.of(page - 1, size, Sort.by(sortBy)));
+		Page<Event> eventPage = eventService.findFuturePaginated(PageRequest.of(page - 1, size, Sort.by(sortBy)));
 		model.addAttribute("eventPage", eventPage);
 		model.addAttribute("pageNumbers", IntStream.rangeClosed(1, eventPage.getTotalPages()).boxed().collect(Collectors.toList()));
 		return "index";

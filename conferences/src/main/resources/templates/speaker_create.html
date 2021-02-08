@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+	<head th:insert="fragments.html :: styles_and_scripts"></head>
+	<body>
+		<header th:insert="fragments.html :: header"> </header>
+	
+	    <h3>Create topic</h3>
+			<form method="POST" th:action="@{/speaker/create}" th:object="${reportDto}" id="reportForm">
+				<div>
+					<lable for="topic">Topic: </label>
+					<input type="text" th:field="*{topic}"/>
+					<span class="validationError"
+						th:if="${#fields.hasErrors('topic')}"
+						th:errors="*{topic}">Name Error</span><br/>			
+					<input type="hidden" th:field="*{accepted}" id="accepted">
+					<input type="hidden" th:field="*{creator}" id="creator">
+					<input type="hidden" th:field="*{speaker}" id="speaker">
+				</div>				
+				<input type="submit" value="Create report"/>
+			<form/>
+			<script th:src="@{/static/js/custom.js}"></script>
+	</body>
+</html>

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -50,9 +51,10 @@ public class ReportService {
 		return reportRepo.save(report);
 	}
 
-	public List<Report> saveAll(Set<Report> reports) {
-		List<Report> reprts = reportRepo.saveAll(reports);
-		return reprts;
+	public void setAccetedFor(Set<Report> reports) {
+		reports.forEach(report -> System.err.println(report.getTopic() + " " + report.isAccepted()));
+		List<String> topics = reports.stream().map(Report::getTopic).collect(Collectors.toList());
+		reportRepo.setAccepted(topics);
 	}
 
 	public void clearSpeaker(Set<Report> reports) {
