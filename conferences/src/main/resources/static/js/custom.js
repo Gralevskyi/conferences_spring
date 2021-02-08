@@ -96,6 +96,10 @@ function addEmptyOption(){
 	sel.appendChild(opt);
 }
 
+$(function() {
+    $("#navigation").load("navigation.html");
+});
+
 $(document).ready(function() {
     $("#locales").change(function () {
         var selectedOption = $('#locales').val();

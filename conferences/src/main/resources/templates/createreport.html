@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>Conferences</title>
-	</head>
-	
+	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body onload="addEmptyOption()">
-		<p>Create topic</p>
+		<header th:insert="fragments.html :: header"> </header>
+		<h3>Create topic</h3>
 		<form method="POST" th:action="@{/moderator/report/create}" th:object="${reportDto}" id="reportForm">
 			<div>
 				<lable for="topic">Topic: </label>
@@ -24,9 +22,7 @@
 				</select>
 			</div>				
 			<input type="submit" value="Create report"/>
-		<form/><br/>
-		<br/>
-		<a href="/">Back to main page</a>
+		<form/>
 		<script th:src="@{/static/js/custom.js}"></script>
 	</body>
 </html>

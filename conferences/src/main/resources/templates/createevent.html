@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>Conferences</title>
-		<link rel="stylesheet" type="text/css" th:href="@{/static/css/custom.css}"/>
-	</head>
-	
+	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body>
-		<h1>Create event</h1>
+		<header th:insert="fragments.html :: header"> </header>
+		<h3>Create event</h3>
 
-			<form method="POST" th:action="@{/moderator/event/create}" th:object="${eventDto}" id="eventForm">
+		<form method="POST" th:action="@{/moderator/event/create}" th:object="${eventDto}" id="eventForm">
 		
 			<lable for="name">Name: </label>
 			<input type="text" th:field="*{name}"/>
@@ -37,7 +34,6 @@
 				
 			<input type="submit" value="Create event"/>
 		<form/>
-		<br/>
-		<a href="/">Back to main page</a>
+		<script th:src="@{/static/js/custom.js}"></script>
 	</body>
 </html>

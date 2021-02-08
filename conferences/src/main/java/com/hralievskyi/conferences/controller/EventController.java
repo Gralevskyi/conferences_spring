@@ -66,4 +66,10 @@ public class EventController {
 		return "redirect:/";
 	}
 
+	@GetMapping("/user")
+	public String getPastEvents(Model model, Principal principal) {
+		model.addAttribute("events", eventService.findByUsername(principal.getName()));
+		return "user";
+	}
+
 }

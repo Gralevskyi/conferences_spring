@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>Conferences</title>
-	</head>
-	
+	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body>
-		<h1>Update event</h1>
+		<header th:insert="fragments.html :: header"> </header>
+		<h3>Update event</h3>
 		<form method="POST" th:action="@{/moderator/update/event/{id}(id = ${event.id})}" th:object="${event}" id="event">
 			<lable for="name">id: </label>
 			<p><span id="eventid" th:text="${id}"> Id </span></p>
@@ -34,7 +32,7 @@
 				th:if="${#fields.hasErrors('time')}"
 				th:errors="*{time}">Name Error</span><br/>
 			<input type="submit" value="Update event"/>
-		<form/><br/>
-		<a href="/">Back to main page</a>
+		<form/>
+		<script th:src="@{/static/js/custom.js}"></script>
 	</body>
 </html>

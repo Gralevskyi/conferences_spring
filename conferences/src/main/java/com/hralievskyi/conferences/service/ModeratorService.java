@@ -1,8 +1,7 @@
 package com.hralievskyi.conferences.service;
 
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class ModeratorService {
 	}
 
 	public Event createEvent(Event event) {
-		return eventRepo.save(event);
+		return Optional.ofNullable(eventRepo.save(event)).orElse(new Event());
 	}
 
 	public boolean createSpeaker(User user) {
@@ -55,58 +54,12 @@ public class ModeratorService {
 	}
 
 	@Transactional
-	public boolean suggestTopic(String topicname, String speakername) {
+	public Report suggestTopic(String topicname, String speakername) {
 		Speaker speaker = speakerRepo.findByName(speakername);
 		Report report = reportRepo.findByTopic(topicname);
 		report.setSpeaker(speaker);
 		report.setAccepted(false);
-		reportRepo.save(report);
-		return true;
-	}
-
-	public boolean changeEventTimeTo(Date datetime) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean changeEventPlaceTo(String placename) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean fetchEventsFromTo(Date from, Date to) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public List<Event> sortEventByDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Event> sortEventByTopicNumber() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Event> sortEventByMembers() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int eventRegistration(Event event) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int eventMembers(Event event) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public boolean sendMessageEventChanges(Event oldVersion, Event newVersion) {
-		// TODO Auto-generated method stub
-		return false;
+		return reportRepo.save(report);
 	}
 
 }

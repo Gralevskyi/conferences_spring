@@ -1,7 +1,11 @@
 package com.hralievskyi.conferences.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,30 +23,31 @@ public class ReportService {
 	}
 
 	public List<Report> findAll() {
-		return reportRepo.findAll();
+		return Optional.ofNullable(reportRepo.findAll()).orElse(new ArrayList<Report>());
 	}
 
 	public Iterable<Report> findFreeOfEvent() {
-		return reportRepo.findFreeOfEvent();
+		return Optional.ofNullable(reportRepo.findFreeOfEvent()).orElse(new ArrayList<Report>());
 	}
 
 	public Iterable<Report> findFreeOfSpeaker() {
-		return reportRepo.findFreeOfSpeaker();
+		return Optional.ofNullable(reportRepo.findFreeOfSpeaker()).orElse(new ArrayList<Report>());
 	}
 
 	public Iterable<Report> findAcceptedFreeOfEvent() {
-		return reportRepo.findAcceptedFreeOfEvent();
+		return Optional.ofNullable(reportRepo.findAcceptedFreeOfEvent()).orElse(new ArrayList<Report>());
 	}
 
 	public Report save(Report report) {
 		return reportRepo.save(report);
 	}
 
+	@Transactional
 	public Report update(Report updatedReport) {
 		Report report = reportRepo.findByTopic(updatedReport.getTopic());
 		report.setAccepted(updatedReport.isAccepted());
 		report.setSpeaker(updatedReport.getSpeaker());
-		return report;
+		return reportRepo.save(report);
 	}
 
 	public List<Report> saveAll(Set<Report> reports) {

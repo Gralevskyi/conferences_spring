@@ -1,21 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>Conferences</title>
-		<link rel="stylesheet" type="text/css" th:href="@{/static/css/custom.css}"/>
-		<script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
-		<script src="/webjars/bootstrap/4.6.0/js/bootstrap.min.js"></script>
-	</head>
+	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body>
-		<div >
-		     <ul class="navbar">
-			   <li>
-		       		<form  sec:authorize="hasRole('ROLE_SPEAKER')" th:action="@{/speaker}" method="GET">
-			 			<input type="submit" value="Speaker cabinet"/>
-			 		</form>
-		       </li>
-		       <li>
+		<header th:insert="fragments.html :: header"> </header>
+		 
+		 <div>
+		 	<ul class="navbar">
+		 		<li>
 		       		<form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/event/create}" method="GET">
 			 			<input type="submit" value="Add event"/>
 			 		</form>
@@ -39,34 +31,18 @@
 		       		<form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/pastevents}" method="GET">
 			 			<input type="submit" value="Watch Past Events"/>
 			 		</form>
-		       </li>		       
-		       <li sec:authorize="isAuthenticated()">
-		       		<form   name="logoutForm" th:action="@{/logout}" method="post">
-			 			<input type="submit" value="Sign Out"/>
-			 		</form> 
-		       </li>
-		       <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}" >Login</a></li>
-		       <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Register</a></li>
-		       <li id= "username" sec:authorize="isAuthenticated()" sec:authentication="name"></li>
-		       <li>
-		       	   <span th:text="#{lang.change}"></span>:
-			       <select id="locales">
-					    <option value=""></option>
-					    <option value="en" th:text="#{lang.eng}"></option>
-					    <option value="uk" th:text="#{lang.ukr}"></option>
-					</select>
-			   </li>
-		     </ul>
+		       </li>	
+		 	</ul>
 		 </div>
 	
 		</br>
-	    <table>
+	    <table id="cust_table">
 		    <thead>
 		        <tr>
 		            <th><a th:href="@{/(sortBy='name')}" th:text="#{index.table.eventname}"> Name </a></th>
 		            <th><a th:href="@{/(sortBy='place')}" th:text="#{index.table.place}"> Place </a></th>
 		            <th><a th:href="@{/(sortBy='date')}" th:text="#{index.table.date}"> Date </a></th>
-		            <th> Report count </th>
+		            <th th:text="#{index.table.reportcount}"> Report count </th>
 		            <th sec:authorize="hasRole('ROLE_MODERATOR')" th:text="#{index.table.update}">Update</th>
 		            <th sec:authorize="hasRole('ROLE_MODERATOR')" th:text="#{index.table.addreports}">Add new reports</th>
 		        </tr>

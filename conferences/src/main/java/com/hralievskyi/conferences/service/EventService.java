@@ -1,5 +1,6 @@
 package com.hralievskyi.conferences.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -35,19 +36,23 @@ public class EventService {
 	}
 
 	public List<Event> findAll() {
-		return eventRepo.findAll();
+		return Optional.ofNullable(eventRepo.findAll()).orElse(new ArrayList<Event>());
 	}
 
 	public List<Event> findPast() {
-		return eventRepo.findPast();
+		return Optional.ofNullable(eventRepo.findPast()).orElse(new ArrayList<Event>());
 	}
 
 	public List<Event> findPastBySpeakerName(String speakername) {
-		return eventRepo.findPastBySpeakerName(speakername);
+		return Optional.ofNullable(eventRepo.findPastBySpeakerName(speakername)).orElse(new ArrayList<Event>());
 	}
 
 	public Page<Event> findPaginated(Pageable pageable) {
 		return Optional.ofNullable(eventRepo.findAll(pageable)).orElse(Page.empty());
+	}
+
+	public List<Event> findByUsername(String username) {
+		return Optional.ofNullable(eventRepo.findByUsername(username)).orElse(new ArrayList<Event>());
 	}
 
 	@Transactional
@@ -71,6 +76,7 @@ public class EventService {
 		return event;
 	}
 
+	@Transactional
 	public User subscribeUser(String username, final long eventid) throws AlreadySubscribed {
 		User user = userRepo.findByUsername(username);
 		boolean alreadySubsribed = Optional.ofNullable(user.getEvents()).map(Collection::stream).orElseGet(Stream::empty).anyMatch(event -> event.getId() == eventid);
