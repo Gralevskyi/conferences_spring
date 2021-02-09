@@ -34,22 +34,17 @@ public class ModeratorService {
 		return Optional.ofNullable(eventRepo.save(event)).orElse(new Event());
 	}
 
-	public boolean createSpeaker(User user) {
+	public boolean createSpeaker(User user, String name_en, String name_uk) {
 		Set<String> roles = new HashSet<>();
 		user.getRoles().forEach(role -> roles.add(role.getName()));
 		if (roles.contains(Roles.ROLE_SPEAKER.toString())) {
-			speakerRepo.save(new Speaker(user.getId(), user.getUsername()));
+			speakerRepo.save(Speaker.builder().id(user.getId()).nameEn(name_en).nameUk(name_uk).build());
 			return true;
 		}
 		return false;
 	}
 
-	@Transactional
 	public Report createReport(Report report) {
-		if (report.getSpeaker() != null) {
-			Speaker speaker = speakerRepo.findByName(report.getSpeaker().getName());
-			report.setSpeaker(speaker);
-		}
 		return reportRepo.save(report);
 	}
 

@@ -24,7 +24,7 @@ function fillInSpeakerTable(speakers){
 	selection.appendChild(opt);
 	for(var i = 0; i< speakers.length; i++){
 		var opt = document.createElement('option');
-		opt.appendChild( document.createTextNode(speakers[i].name));
+		opt.appendChild( document.createTextNode(speakers[i].localName));
 		opt.value = speakers[i].id; 
 		selection.appendChild(opt);
 	}
@@ -38,7 +38,6 @@ function fillInSpeakerTable(speakers){
 function getTopic(button) {
 	var report = button.closest('td').closest('tr').cells[0].textContent;
 	url = "http://localhost:8080/report/update/"+ report;
-	console.log(url);
 }
 
 function updateReport(button) {
@@ -62,7 +61,7 @@ function updateReport(button) {
 }
 
 function sendUpdateRequest(contrainer){
-	url = "http://localhost:8080/report/update/"+ report;
+	url = "http://localhost:8080/report/update/"+ container.report;
 	var xhttp = new XMLHttpRequest();		
 	xhttp.onload = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -74,9 +73,10 @@ function sendUpdateRequest(contrainer){
 	xhttp.onerror = function() { 
 		alert(`network error`);
 	};
-	var report = {topic: container.report,
+	var report = {topicEn: container.report,
+			topicUk: container.report,
 			creator: container.creator,
-			speaker: container.newSpeakerId, 
+			speakerId: container.newSpeakerId, 
 			accepted: container.newAccepted == 'true'}
 	var csrfCookie = document.getElementsByTagName('meta')[0].getAttribute('content');
 	xhttp.open("POST", url, true);

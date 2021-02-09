@@ -9,8 +9,8 @@
 		<ul th:each="event : ${events}">
 			<li th:if="${events.empty}">Events are not available</li>
 			<li>
-				<p><span th:text="${event.name}"> Name </span></p>
-				<p><span th:text="${event.place}"> Place </span></p>
+				<p><span th:text="${event.localName}"> Name </span></p>
+				<p><span th:text="${event.localPlace}"> Place </span></p>
 				<p><span th:text="${event.date}"> Date </span></p>
 				<p><span th:text="${event.time}"> Time </span></p>
 				<p>Reports</p>
@@ -24,8 +24,8 @@
 	            			<td colspan="2"> No Reports Available </td>
 	        			</tr>
 						<tr th:each="report : ${event.reports}">
-							<td><span th:text="${report.topic}" >Topic</span></td>
-							<td><span th:text="${report.speaker}" >Speaker</span></td>
+							<td><span th:text="${report.localTopic}" >Topic</span></td>
+							<td><span th:text="${report.speaker.localName}" >Speaker</span></td>
 						</tr>
 					</tbody>
 				</table>

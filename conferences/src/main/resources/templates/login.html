@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>Conferences</title>
-	</head>
-	
+	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body>
-		<h1>Login</h1>
-		
-		<p> New here? 
-			<a th:href="@{/register}">Click</a> to register.<p>
+		<header th:insert="fragments.html :: header"> </header>
+		<h3 th:value="#{login.header}">Login</h3>
 			
 		<div th:if="${param.error}">
 			<p style="color:red">Unable to login. Check your username and password.</p>
@@ -17,18 +12,17 @@
 			
 		<form method="POST" th:action="@{/login}" id="nameForm">
 
-			<label for="username">Login: </label>
+			<label for="username" th:value="#{login.form.login}">Login: </label>
 			<input type="text" name="username" id="username"/><br/>
 			
-			<label for="password">Password:</label>
+			<label for="password" th:value="#{login.form.password}">Password:</label>
 			<input type="password" name="password" id="password"/><br/>
 						
-			<input type="submit" value="Login"/>
+			<input type="submit" value="Login" th:value="#{login.submit}"/>
 		</form>
-		</br>
-		<p>To <a th:href="@{/}">start</a>  page</p>
 
 		<input type="hidden" name="${_csrf}" th:value="${_csrf.token}"/>
+		<script th:src="@{/static/js/custom.js}"></script>
 	</body>
 	
 </html>

@@ -37,14 +37,15 @@ public class SpeakerController {
 
 	@GetMapping
 	public String getSpeakerCabinet(Model model, Principal principal) {
-		model.addAttribute("speaker", new Speaker(principal.getName()));
+		Speaker speaker = Speaker.builder().localName(principal.getName()).build();
+		model.addAttribute("speaker", speaker);
 		model.addAttribute("reports", speakerService.getReports(principal.getName()));
 		return "speaker_cabinet";
 	}
 
 	@PostMapping(path = "/reports", params = "action=accept")
 	public String acceptReports(Speaker speaker) {
-		reportService.setAccetedFor(speaker.getReports());
+		reportService.setAcceptedFor(speaker.getReports());
 		return "redirect:/speaker";
 	}
 
@@ -62,18 +63,18 @@ public class SpeakerController {
 
 	@GetMapping("/create")
 	public String createReport(Model model, Principal principal) {
-		ReportDto reportDto = ReportDto.builder().creator(principal.getName()).speaker(principal.getName()).build();
+		ReportDto reportDto = ReportDto.builder().creator(principal.getName()).build();
 		model.addAttribute("reportDto", reportDto);
 		return "speaker_create";
 	}
 
 	@PostMapping(path = "/create")
-	public String createReport(Model model, @Valid ReportDto reportDto, Errors errors) {
+	public String createReport(Model model, @Valid ReportDto reportDto, Errors errors, Principal principal) {
 		if (errors.hasErrors()) {
 			model.addAttribute("reportDto", reportDto);
 			return "speaker_create";
 		}
-		moderatorService.createReport(reportDto.toReport());
+		speakerService.createReport(reportDto.toReport(), principal.getName());
 		return "redirect:/speaker";
 	}
 }

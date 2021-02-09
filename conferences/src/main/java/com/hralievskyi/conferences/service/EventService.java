@@ -40,11 +40,15 @@ public class EventService {
 	}
 
 	public List<Event> findPast() {
-		return Optional.ofNullable(eventRepo.findPast()).orElse(new ArrayList<Event>());
+		List<Event> events = Optional.ofNullable(eventRepo.findPast()).orElse(new ArrayList<Event>());
+		events.forEach(event -> event.setLocales());
+		return events;
 	}
 
 	public List<Event> findPastBySpeakerName(String speakername) {
-		return Optional.ofNullable(eventRepo.findPastBySpeakerName(speakername)).orElse(new ArrayList<Event>());
+		List<Event> events = Optional.ofNullable(eventRepo.findPastBySpeakerName(speakername)).orElse(new ArrayList<Event>());
+		events.forEach(event -> event.setLocales());
+		return events;
 	}
 
 	public Page<Event> findFuturePaginated(Pageable pageable) {
@@ -52,18 +56,34 @@ public class EventService {
 	}
 
 	public List<Event> findByUsername(String username) {
-		return Optional.ofNullable(eventRepo.findByUsername(username)).orElse(new ArrayList<Event>());
+		List<Event> events = eventRepo.findByUsername(username);
+		if (events != null) {
+			events.forEach(event -> event.setLocales());
+			return events;
+		}
+		return new ArrayList<Event>();
 	}
 
 	@Transactional
-	public Optional<Event> findByIdWithTopics(long id) {
+	public Event findByIdWithTopics(long id) {
 		Optional<Event> event = eventRepo.findById(id);
 		if (event.isPresent()) {
 			Iterable<Report> itrReports = reportRepo.findByEventid(id);
 			List<Report> reports = StreamSupport.stream(itrReports.spliterator(), false).collect(Collectors.toList());
 			event.get().setReports(reports);
+			event.get().setLocales();
 		}
-		return event;
+		return event.orElse(Event.builder().build());
+	}
+
+	@Transactional
+	public boolean update(Event event) {
+		Optional<Event> currentEvent = eventRepo.findById(event.getId());
+		if (currentEvent.isPresent()) {
+			currentEvent.get().updateFrom(event);
+			eventRepo.save(currentEvent.get());
+		}
+		return false;
 	}
 
 	@Transactional
@@ -83,7 +103,8 @@ public class EventService {
 		if (alreadySubsribed) {
 			throw new AlreadySubscribed("You have subscribed earlie. You can not do it several times");
 		}
-		user.addEvent(new Event(eventid));
+		user.addEvent(Event.builder().id(eventid).build());
+		eventRepo.increseSubscrUsers(eventid);
 		return userRepo.save(user);
 	}
 

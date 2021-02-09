@@ -33,22 +33,22 @@ body {
 	display: inline;
 }
 
-#cust_table {
+.cust_table {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
 
-#cust_table td, #customers th {
+.cust_table td, #customers th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
 #customers tr:nth-child(even){background-color: #f2f2f2;}
 
-#cust_table tr:hover {background-color: #ddd;}
+.cust_table tr:hover {background-color: #ddd;}
 
-#cust_table th {
+.cust_table th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;

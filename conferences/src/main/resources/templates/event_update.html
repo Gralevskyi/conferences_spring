@@ -8,17 +8,30 @@
 		<form method="POST" th:action="@{/moderator/update/event/{id}(id = ${event.id})}" th:object="${event}" id="event">
 			<lable for="name">id: </label>
 			<p><span id="eventid" th:text="${id}"> Id </span></p>
-			<lable for="name">Name: </label>
-			<input type="text" th:field="*{name}"/>
+			
+			<lable for="nameEn">NameEn: </label>
+			<input type="text" th:field="*{nameEn}"/>
 			<span class="validationError"
-				th:if="${#fields.hasErrors('name')}"
-				th:errors="*{name}">Name Error</span><br/>
+				th:if="${#fields.hasErrors('nameEn')}"
+				th:errors="*{nameEn}">Name Error</span><br/>
+				
+			<lable for="nameUk">NameUk: </label>
+			<input type="text" th:field="*{nameUk}"/>
+			<span class="validationError"
+				th:if="${#fields.hasErrors('nameUk')}"
+				th:errors="*{nameUk}">Name Error</span><br/>
 		
-			<lable for="place">Place: </label>
-			<input type="text" th:field="*{place}"/>
+			<lable for="placeEn">PlaceEn: </label>
+			<input type="text" th:field="*{placeEn}"/>
 			<span class="validationError"
-				th:if="${#fields.hasErrors('place')}"
-				th:errors="*{place}">Name Error</span><br/>
+				th:if="${#fields.hasErrors('placeEn')}"
+				th:errors="*{placeEn}">Name Error</span><br/>
+				
+			<lable for="placeUk">Place: </label>
+			<input type="text" th:field="*{placeUk}"/>
+			<span class="validationError"
+				th:if="${#fields.hasErrors('placeUk')}"
+				th:errors="*{placeUk}">Name Error</span><br/>
 				
 			<lable for="date">Date: </label>
 			<input type="date" th:text="${#temporals.format(localDate, 'yyyy-MM-dd')}" th:field="*{date}"/>

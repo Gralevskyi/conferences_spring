@@ -1,7 +1,6 @@
 package com.hralievskyi.conferences.controller;
 
 import java.security.Principal;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hralievskyi.conferences.entity.Event;
 import com.hralievskyi.conferences.service.EventService;
 import com.hralievskyi.conferences.util.AlreadySubscribed;
+import com.hralievskyi.conferences.util.SortByToLocal;
 
 @Controller
 @RequestMapping("/")
@@ -33,7 +33,8 @@ public class EventController {
 
 	@GetMapping
 	public String listEvents(Model model, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "4") Integer size, @RequestParam(defaultValue = "date") String sortBy) {
-		Page<Event> eventPage = eventService.findFuturePaginated(PageRequest.of(page - 1, size, Sort.by(sortBy)));
+		Page<Event> eventPage = eventService.findFuturePaginated(PageRequest.of(page - 1, size, Sort.by(SortByToLocal.convert(sortBy))));
+		eventPage.getContent().forEach(event -> event.setLocales());
 		model.addAttribute("eventPage", eventPage);
 		model.addAttribute("pageNumbers", IntStream.rangeClosed(1, eventPage.getTotalPages()).boxed().collect(Collectors.toList()));
 		return "index";
@@ -41,13 +42,10 @@ public class EventController {
 
 	@GetMapping("/eventdetails/{id}")
 	public String getEventDetails(Model model, @PathVariable(value = "id") long eventid, Principal principal) {
-		Optional<Event> event = eventService.findByIdWithTopics(eventid);
-		if (event.isPresent()) {
-			model.addAttribute("errorMessage", "");
-			model.addAttribute("alreadySubsribed", false);
-			model.addAttribute("event", event.get());
-		}
-		return "eventdetails";
+		model.addAttribute("errorMessage", "");
+		model.addAttribute("alreadySubsribed", false);
+		model.addAttribute("event", eventService.findByIdWithTopics(eventid));
+		return "event_details";
 	}
 
 	@PostMapping("/subscribe/{id}")
@@ -55,13 +53,10 @@ public class EventController {
 		try {
 			eventService.subscribeUser(principal.getName(), eventid);
 		} catch (AlreadySubscribed ex) {
-			Optional<Event> event = eventService.findByIdWithTopics(eventid);
-			if (event.isPresent()) {
-				model.addAttribute("errorMessage", ex.getMessage());
-				model.addAttribute("alreadySubsribed", true);
-				model.addAttribute("event", event.get());
-			}
-			return "eventdetails";
+			model.addAttribute("errorMessage", ex.getMessage());
+			model.addAttribute("alreadySubsribed", true);
+			model.addAttribute("event", eventService.findByIdWithTopics(eventid));
+			return "event_details";
 		}
 		return "redirect:/";
 	}

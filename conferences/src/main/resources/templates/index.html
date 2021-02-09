@@ -18,11 +18,6 @@
 			 		</form> 
 		       </li>
 		       <li>
-		       		<form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/speakers}" method="GET">
-			 			<input type="submit" th:value="#{index.moderator.watchspeakers}"/>
-			 		</form>
-		       </li>
-		       <li>
 		       		<form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/reports}" method="GET">
 			 			<input type="submit" th:value="#{index.moderator.watchreports}"/>
 			 		</form>
@@ -36,12 +31,13 @@
 		 </div>
 	
 		</br>
-	    <table id="cust_table">
+	    <table class="cust_table">
 		    <thead>
 		        <tr>
 		            <th><a th:href="@{/(sortBy='name')}" th:text="#{index.table.eventname}"> Name </a></th>
 		            <th><a th:href="@{/(sortBy='place')}" th:text="#{index.table.place}"> Place </a></th>
 		            <th><a th:href="@{/(sortBy='date')}" th:text="#{index.table.date}"> Date </a></th>
+		            <th><a th:href="@{/(sortBy='subscr_users')}" th:text="#{index.table.subscribed}"> Subscribed </a></th>
 		            <th th:text="#{index.table.reportcount}"> Report count </th>
 		            <th sec:authorize="hasRole('ROLE_MODERATOR')" th:text="#{index.table.update}">Update</th>
 		            <th sec:authorize="hasRole('ROLE_MODERATOR')" th:text="#{index.table.addreports}">Add new reports</th>
@@ -52,9 +48,10 @@
 		            <td colspan="2"> No Events Available </td>
 		        </tr>
 		        <tr th:each="event : ${eventPage.content}">
-		            <td><a th:href="@{eventdetails/{id}(id = ${event.id})}"><span th:text="${event.name}"> Name </span></a></td>
-		            <td><span th:text="${event.place}"> Place </span></td>
+		            <td><a th:href="@{eventdetails/{id}(id = ${event.id})}"><span th:text="${event.localName}"> Name </span></a></td>
+		            <td><span th:text="${event.localPlace}"> Place </span></td>
 		            <td><span th:text="${event.date}"> Date </span></td>
+		            <td><span th:text="${event.subscrUsers}"> Subscribed </span></td>
 		            <td>
 						<span th:with="convertedList=${#lists.toList(event.reports)}">
     						<span th:text="${#lists.size(convertedList)}"/>

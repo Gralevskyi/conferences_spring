@@ -7,17 +7,23 @@
 		<h3>Create topic</h3>
 		<form method="POST" th:action="@{/moderator/report/create}" th:object="${reportDto}" id="reportForm">
 			<div>
-				<lable for="topic">Topic: </label>
-				<input type="text" th:field="*{topic}"/>
+				<lable for="topicEn">Topic Eng: </label>
+				<input type="text" th:field="*{topicEn}"/>
 				<span class="validationError"
-					th:if="${#fields.hasErrors('topic')}"
-					th:errors="*{topic}">Name Error</span><br/>			
+					th:if="${#fields.hasErrors('topicEn')}"
+					th:errors="*{topicEn}">Name Error</span><br/>			
+				</br>
+				<lable for="topicUk">Topic Ukr: </label>
+				<input type="text" th:field="*{topicUk}"/>
+				<span class="validationError"
+					th:if="${#fields.hasErrors('topicUk')}"
+					th:errors="*{topicUk}">Name Error</span><br/>
 				<input type="hidden" th:field="*{accepted}" id="accepted">
-				<input type="hidden" th:field="*{creator}" id="creator">
+				<input type="hidden" th:field="*{creator}" id="creator">			
 			</div>
 			<div>
-				<select th:field="*{speaker}" id="speakers_select">
-	    			<option th:each="speaker : ${speakers}" th:value="${speaker.name}" th:text="${speaker.name}" th:selected:false>
+				<select th:field="*{speakerId}" id="speakers_select">
+	    			<option th:each="speaker : ${speakers}" th:value="${speaker.id}" th:text="${speaker.localName}" th:selected:false>
 	    			</option>
 				</select>
 			</div>				

@@ -12,8 +12,8 @@
 		        </li>
 	            <li th:each="report : ${reports}">
 	                <div>
-	                    <input type="checkbox" th:field="*{reports}" th:value="${report.topic}">
-	                    <label th:text="${report.topic}"></label>
+	                    <input type="checkbox" th:field="*{reports}" th:value="${report.id}">
+	                    <label th:text="${report.localTopic}"></label>
 	                </div>
 	            </li>
 	        </ul>

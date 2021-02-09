@@ -9,7 +9,7 @@
 	<body onload="downloadSpeakers()">
 		<header th:insert="fragments.html :: header"> </header>
 
-		<table id="topictable">
+		<table id="topictable" class="cust_table">
 			<thead>
 				<tr>
 					<th> Topic </th>
@@ -23,10 +23,10 @@
 			</thead>
 			<tbody>
 				<tr th:each="report : ${reports}">
-					<td><span th:text="${report.topic}"> Topic </span></td>
-					<td><span th:text="${report.creator}"> Topic </span></td>
+					<td><span th:text="${report.localTopic}"> Topic </span></td>
+					<td><span th:text="${report.creator}"> Creator </span></td>
 					<td><span th:text="${report.accepted}"> Accepted </span></td>
-					<td><span th:text="${report.speaker} ? ${report.speaker.name} : 'Absent'">Speaker</span></td>
+					<td><span th:text="${report.speaker} ? ${report.speaker.localName} : 'Absent'">Speaker</span></td>
 					<td>
 						<select>
 							<option><span th:text="${report.accepted}"> Accepted </span></option>

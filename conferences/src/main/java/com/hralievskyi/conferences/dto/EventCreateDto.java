@@ -22,14 +22,21 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class EventDto {
+public class EventCreateDto {
 
 	@NotNull
-	@Size(min = 5, message = "Event name must be at least 5 characters long")
-	String name;
+	@Size(min = 5, message = "{event.create.name}")
+	String nameEn;
 
-	@NotBlank(message = "Place is required")
-	String place;
+	@NotNull
+	@Size(min = 5, message = "{event.create.name}")
+	String nameUk;
+
+	@NotBlank(message = "{event.create.place}")
+	String placeEn;
+
+	@NotBlank(message = "{event.create.place}")
+	String placeUk;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Future
@@ -39,7 +46,7 @@ public class EventDto {
 	LocalTime time;
 
 	public Event toEvent() {
-		return new Event(name, place, date, time);
+		return Event.builder().nameEn(this.nameEn).nameUk(this.nameUk).placeEn(this.placeEn).placeUk(this.placeUk).date(this.date).time(this.time).build();
 	}
 
 }

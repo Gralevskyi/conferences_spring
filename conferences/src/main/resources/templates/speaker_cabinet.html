@@ -17,7 +17,7 @@
 			<p>My accepted topics<p>
 			<ul th:each="report : ${reports}">
 				<li th:if="${reports.empty}">Accepted reports are not available</li>
-				<li th:if="${report.accepted}"><span th:text="${report.topic}">Report topic</span></li>
+				<li th:if="${report.accepted}"><span th:text="${report.localTopic}">Report topic</span></li>
 			</ul>
 		
 			<p>My not accepted topics</p>
@@ -25,8 +25,8 @@
 		        <ul>
 		            <li th:if="${!report.accepted}" th:each="report : ${reports}">
 		                <div>
-		                    <input type="checkbox" th:field="*{reports}" th:value="${report.topic}">
-		                    <label th:text="${report.topic}"></label>
+		                    <input type="checkbox" th:field="*{reports}" th:value="${report.id}">
+		                    <label th:text="${report.localTopic}"></label>
 		                </div>
 		            </li>
 		        </ul>

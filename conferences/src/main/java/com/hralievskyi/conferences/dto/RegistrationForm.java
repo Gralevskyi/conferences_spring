@@ -13,12 +13,12 @@ import com.sun.istack.NotNull;
 @PasswordConfirmationCheck(first = "passwordConfirmation", second = "password")
 public class RegistrationForm {
 
-	@Email(message = "Email should be valid")
+	@Email(message = "{regist.name.validation}")
 	@UniqueUsername
 	private String username;
 
 	@NotNull
-	@Size(min = 5, max = 25, message = "Password must be at least 5 but not longer then 25 characters long")
+	@Size(min = 5, max = 25, message = "regist.password.validation")
 	private String password;
 	private String passwordConfirmation;
 

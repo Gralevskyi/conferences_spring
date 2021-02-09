@@ -27,16 +27,24 @@ public class ReportService {
 		return Optional.ofNullable(reportRepo.findAll()).orElse(new ArrayList<Report>());
 	}
 
+	public List<Report> findAllProxy() {
+		List<Report> reports = Optional.ofNullable(reportRepo.findAll()).orElse(new ArrayList<Report>());
+		return setSpeakerReportsToNull(reports);
+	}
+
 	public Iterable<Report> findFreeOfEvent() {
 		return Optional.ofNullable(reportRepo.findFreeOfEvent()).orElse(new ArrayList<Report>());
 	}
 
-	public Iterable<Report> findFreeOfSpeaker() {
-		return Optional.ofNullable(reportRepo.findFreeOfSpeaker()).orElse(new ArrayList<Report>());
+	public List<Report> findAcceptedFreeOfEvent() {
+		List<Report> reports = Optional.ofNullable(reportRepo.findAcceptedFreeOfEvent()).orElse(new ArrayList<Report>());
+		return setSpeakerReportsToNull(reports);
 	}
 
-	public Iterable<Report> findAcceptedFreeOfEvent() {
-		return Optional.ofNullable(reportRepo.findAcceptedFreeOfEvent()).orElse(new ArrayList<Report>());
+	@Transactional
+	public void setSpeakerAccepted(Report report) {
+		reportRepo.setAccepted(report.isAccepted(), report.getLocalTopic());
+		reportRepo.setSpeaker(report.getSpeaker().getId(), report.getLocalTopic());
 	}
 
 	public Report save(Report report) {
@@ -45,27 +53,30 @@ public class ReportService {
 
 	@Transactional
 	public Report update(Report updatedReport) {
-		Report report = reportRepo.findByTopic(updatedReport.getTopic());
+		Report report = reportRepo.findByTopic(updatedReport.getLocalTopic());
 		report.setAccepted(updatedReport.isAccepted());
 		report.setSpeaker(updatedReport.getSpeaker());
 		return reportRepo.save(report);
 	}
 
-	public void setAccetedFor(Set<Report> reports) {
-		reports.forEach(report -> System.err.println(report.getTopic() + " " + report.isAccepted()));
-		List<String> topics = reports.stream().map(Report::getTopic).collect(Collectors.toList());
+	public void setAcceptedFor(Set<Report> reports) {
+		List<Long> topics = reports.stream().map(Report::getId).collect(Collectors.toList());
 		reportRepo.setAccepted(topics);
 	}
 
 	public void clearSpeaker(Set<Report> reports) {
-		reports.forEach(report -> report.setSpeaker(null));
-		reportRepo.saveAll(reports);
+		List<Long> reportId = reports.stream().map(Report::getId).collect(Collectors.toList());
+		reportRepo.setSpeakerToNull(reportId);
 	}
 
-	public Iterable<Report> setSpeakerReportsToNull(Iterable<Report> reports) {
+	public List<Report> setSpeakerReportsToNull(List<Report> reports) {
 		reports.forEach(report -> {
-			if (report.getSpeaker() != null)
+			report.setLocalTopic();
+
+			if (report.getSpeaker() != null) {
+				report.getSpeaker().setLocalName();
 				report.getSpeaker().setReports(null);
+			}
 		});
 		return reports;
 	}

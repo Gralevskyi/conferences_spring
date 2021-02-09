@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title>Text Parser</title>
-	</head>
-	
+	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body>
+		<header th:insert="fragments.html :: header"> </header>
 		<h1>Register</h1>
 		
 		<form method="POST" th:action="@{/register}" th:object="${registrationForm}" id="registerForm">
@@ -31,7 +29,7 @@
 			<input type="submit" value="Register"/>
 		<form/><br/>
 
-		<a href="/">Back to main page</a>
+		<script th:src="@{/static/js/custom.js}"></script>
 	</body>
 
 </html>

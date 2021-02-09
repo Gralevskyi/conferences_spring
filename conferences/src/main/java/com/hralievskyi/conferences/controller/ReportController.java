@@ -30,13 +30,13 @@ public class ReportController {
 
 	@GetMapping(path = "/speakers", consumes = "application/json")
 	public ResponseEntity<Object> getSpeakers() {
-		return new ResponseEntity<>(speakerService.getAllDto(), HttpStatus.OK);
+		return new ResponseEntity<>(speakerService.getAllProxy(), HttpStatus.OK);
 	}
 
 	@PostMapping(path = "/update/{report}", consumes = "application/json")
 	public ResponseEntity<Object> updateReport(@RequestBody ReportDto reportDto) {
 		try {
-			reportService.save(reportDto.toReport(Long.parseLong(reportDto.getSpeaker())));
+			reportService.setSpeakerAccepted(reportDto.toReport(reportDto.getSpeakerId()));
 			return new ResponseEntity<>("OK", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

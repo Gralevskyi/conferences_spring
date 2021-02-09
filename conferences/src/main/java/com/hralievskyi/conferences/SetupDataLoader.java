@@ -10,7 +10,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.hralievskyi.conferences.entity.Report;
 import com.hralievskyi.conferences.entity.user.Role;
 import com.hralievskyi.conferences.entity.user.Roles;
 import com.hralievskyi.conferences.entity.user.User;
@@ -47,58 +46,62 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 		Role adminRole = roleRepository.findByName(Roles.ROLE_MODERATOR.toString());
 		Role speakerRole = roleRepository.findByName(Roles.ROLE_SPEAKER.toString());
-		Role custRole = roleRepository.findByName(Roles.ROLE_USER.toString());
+		// Role custRole = roleRepository.findByName(Roles.ROLE_USER.toString());
+
 		User user = new User();
 		user.setUsername("admin@mail.com");
 		user.setPassword(passwordEncoder.encode("names"));
 		Set<Role> roles = new HashSet<>();
-		roles.add(adminRole);
-		roles.add(speakerRole);
-		roles.add(custRole);
+		roles.add(adminRole); // roles.add(speakerRole); //
+		// roles.add(custRole);
 		user.setRoles(roles);
 		userRepository.save(user);
-		moderatorService.createSpeaker(user);
 
-		Set<Role> spRoles = new HashSet<>(roles);
-		spRoles.remove(adminRole);
+		// moderatorService.createSpeaker(user);
+
+		Set<Role> spRoles = new HashSet<>();
+		// spRoles.remove(adminRole);
+		spRoles.add(speakerRole);
 		User speaker = new User();
 		speaker.setUsername("dmytro@mail.com");
 		speaker.setPassword(passwordEncoder.encode("names"));
 		speaker.setRoles(spRoles);
 		User createdUser = userRepository.save(speaker);
-		moderatorService.createSpeaker(createdUser);
+		moderatorService.createSpeaker(createdUser, "Dmytro", "Дмитро");
 
 		User speakerB = new User();
 		speakerB.setUsername("yuriy@mail.com");
 		speakerB.setPassword(passwordEncoder.encode("names"));
 		speakerB.setRoles(spRoles);
 		User createdUserB = userRepository.save(speakerB);
-		moderatorService.createSpeaker(createdUserB);
+		moderatorService.createSpeaker(createdUserB, "Yuriy", "Юрій");
 
 		User speakerC = new User();
-		speakerC.setUsername("maxim@mail.com");
+		speakerC.setUsername("maxym@mail.com");
 		speakerC.setPassword(passwordEncoder.encode("names"));
 		speakerC.setRoles(spRoles);
 		User createdUserC = userRepository.save(speakerC);
-		moderatorService.createSpeaker(createdUserC);
+		moderatorService.createSpeaker(createdUserC, "Maxym", "Максим");
 
-		Report report = new Report("Object Oriented Programming", "admin@mail.com");
-		moderatorService.createReport(report);
-
-		Report report1 = new Report("Java fundamentals", "admin@mail.com");
-		moderatorService.createReport(report1);
-
-		Report report2 = new Report("Sprint JPA", "admin@mail.com");
-		moderatorService.createReport(report2);
-
-		Report report3 = new Report("Spring Security", "admin@mail.com");
-		moderatorService.createReport(report3);
-
-		Report report4 = new Report("XML fundamentals", "admin@mail.com");
-		moderatorService.createReport(report4);
-
-		Report report5 = new Report("HTML and CSS", "admin@mail.com");
-		moderatorService.createReport(report5);
+		/*
+		 * Report report = new Report("Object Oriented Programming", "admin@mail.com");
+		 * moderatorService.createReport(report);
+		 * 
+		 * Report report1 = new Report("Java fundamentals", "admin@mail.com");
+		 * moderatorService.createReport(report1);
+		 * 
+		 * Report report2 = new Report("Sprint JPA", "admin@mail.com");
+		 * moderatorService.createReport(report2);
+		 * 
+		 * Report report3 = new Report("Spring Security", "admin@mail.com");
+		 * moderatorService.createReport(report3);
+		 * 
+		 * Report report4 = new Report("XML fundamentals", "admin@mail.com");
+		 * moderatorService.createReport(report4);
+		 * 
+		 * Report report5 = new Report("HTML and CSS", "admin@mail.com");
+		 * moderatorService.createReport(report5);
+		 */
 
 		alreadySetup = true;
 	}

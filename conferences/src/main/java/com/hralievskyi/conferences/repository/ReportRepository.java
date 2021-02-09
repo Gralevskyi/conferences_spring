@@ -12,22 +12,37 @@ import org.springframework.data.repository.query.Param;
 import com.hralievskyi.conferences.entity.Report;
 
 public interface ReportRepository extends JpaRepository<Report, String> {
+
+	@Query(value = "SELECT t.* FROM reports t WHERE t.topic_en = ?1 OR t.topic_uk = ?1", nativeQuery = true)
 	Report findByTopic(String topic);
 
-	@Query(value = "SELECT t.* FROM reports t INNER JOIN event_reports et on t.topic = et.report_topic WHERE et.event_id = ?1", nativeQuery = true)
+	@Query(value = "SELECT t.* FROM reports t INNER JOIN event_reports et on t.id = et.report_id WHERE et.event_id = ?1", nativeQuery = true)
 	Iterable<Report> findByEventid(long id);
 
-	@Query(value = "SELECT t.* FROM reports t where t.speaker is null", nativeQuery = true)
+	@Query(value = "SELECT t.* FROM reports t WHERE t.speaker is null", nativeQuery = true)
 	Iterable<Report> findFreeOfSpeaker();
 
-	@Query(value = "SELECT t.* FROM reports t LEFT JOIN event_reports et on t.topic = et.report_topic WHERE et.report_topic is null", nativeQuery = true)
+	@Query(value = "SELECT t.* FROM reports t LEFT JOIN event_reports et on t.id = et.report_id WHERE et.report_id is null", nativeQuery = true)
 	Iterable<Report> findFreeOfEvent();
 
-	@Query(value = "SELECT t.* FROM reports t LEFT JOIN event_reports et on t.topic = et.report_topic WHERE et.report_topic is null AND t.speaker is not null and t.accepted = 1", nativeQuery = true)
-	Iterable<Report> findAcceptedFreeOfEvent();
+	@Query(value = "SELECT t.* FROM reports t LEFT JOIN event_reports et on t.id = et.report_id WHERE et.report_id is null AND t.speaker is not null and t.accepted = 1", nativeQuery = true)
+	List<Report> findAcceptedFreeOfEvent();
 
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE reports r SET r.accepted = 1 WHERE r.topic IN (:topics)", nativeQuery = true)
-	void setAccepted(@Param("topics") List<String> topics);
+	@Query(value = "UPDATE reports r SET r.accepted = 1 WHERE r.id IN (:reportId)", nativeQuery = true)
+	void setAccepted(@Param("reportId") List<Long> reportId);
+
+	@Transactional
+	@Modifying
+	@Query(value = "UPDATE reports r SET r.speaker = NULL WHERE r.id IN (:reportId)", nativeQuery = true)
+	void setSpeakerToNull(@Param("reportId") List<Long> reportId);
+
+	@Modifying
+	@Query(value = "UPDATE reports r SET r.accepted = ?1 WHERE r.topic_en = ?2 OR r.topic_uk = ?2", nativeQuery = true)
+	void setAccepted(boolean accepted, String localTopic);
+
+	@Modifying
+	@Query(value = "UPDATE reports r SET r.speaker = ?1 WHERE r.topic_en = ?2 OR r.topic_uk = ?2", nativeQuery = true)
+	void setSpeaker(long speakerId, String localTopic);
 }

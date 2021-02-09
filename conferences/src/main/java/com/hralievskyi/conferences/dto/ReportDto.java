@@ -22,31 +22,36 @@ import lombok.Setter;
 
 public class ReportDto {
 	@NotNull
-	@Size(min = 5, max = 50, message = "Report topic must be at least 5 and maximum 50 characters long")
-	private String topic;
+	@Size(min = 5, max = 50, message = "{report.create.topic}")
+	private String topicEn;
+
+	@NotNull
+	@Size(min = 5, max = 50, message = "{report.create.topic}")
+	private String topicUk;
 
 	private boolean accepted;
 
 	private String creator;
 
 	@Nullable
-	private String speaker;
+	private long speakerId;
 
 	public ReportDto(String author) {
 		this.creator = author;
 	}
 
 	public Report toReport() {
-		Speaker newSpeaker = new Speaker(speaker);
-		return new Report(topic, creator, accepted, newSpeaker);
+		Speaker speaker = Speaker.builder().build();
+		speaker.setId(speakerId);
+		return Report.builder().topicEn(this.topicEn).topicUk(this.topicUk).creator(this.creator).accepted(this.accepted).speaker(speaker).build();
 	}
 
 	public Report toReport(long id) {
 		Speaker newSpeaker = null;
 		if (id != -1) {
-			newSpeaker = new Speaker(id);
+			newSpeaker = Speaker.builder().id(id).build();
 		}
-		return new Report(topic, creator, accepted, newSpeaker);
+		return Report.builder().topicEn(this.topicEn).topicUk(this.topicUk).creator(this.creator).accepted(this.accepted).speaker(newSpeaker).build();
 	}
 
 }

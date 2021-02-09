@@ -4,8 +4,8 @@
 	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body>
 		<header th:insert="fragments.html :: header"> </header>
-			<p><span th:text="${event.name}"> Name </span></p>
-		    <p><span th:text="${event.place}"> Place </span></p>
+			<p><span th:text="${event.localName}"> Name </span></p>
+		    <p><span th:text="${event.localPlace}"> Place </span></p>
 		    <p><span th:text="${event.date}"> Date </span></p>
 		    <p><span th:text="${event.time}"> Time </span></p>
 			
@@ -22,8 +22,8 @@
 			            <td colspan="2"> No Reports Available </td>
 			        </tr>
 			        <tr th:each="report : ${event.reports}">
-			            <td><span th:text="${report.topic}"> Topic </span></td>
-			            <td><span th:text="${report.speaker.name}"> Speaker </span></td>
+			            <td><span th:text="${report.localTopic}"> Topic </span></td>
+			            <td><span th:text="${report.speaker.localName}"> Speaker </span></td>
 			        </tr>
 			     </tbody>
 			</table>		
@@ -31,7 +31,7 @@
 			<p sec:authorize="isAuthenticated()" th:if="${alreadySubsribed}" style="color:red"><span th:text="${errorMessage}">Error message</span></p>
 			<p sec:authorize="isAuthenticated()" th:if="${!event.date.isAfter(#temporals.createToday())}">Event has passed </p>
 			<div th:if="${!alreadySubsribed}">
-				<form th:if="${event.date.isAfter(#temporals.createToday())}" sec:authorize="isAuthenticated()" method="post" th:action="@{/subscribe/{id}(id = ${event.id})}">
+				<form th:if="${event.date.isAfter(#temporals.createToday())}" sec:authorize="hasRole('ROLE_USER')" method="post" th:action="@{/subscribe/{id}(id = ${event.id})}">
 					<button name="button">Subscribe</button>
 				</form>
 			</div>		

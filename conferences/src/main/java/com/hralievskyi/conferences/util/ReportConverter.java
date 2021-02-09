@@ -8,7 +8,7 @@ import com.hralievskyi.conferences.entity.Report;
 @Component
 public class ReportConverter implements Converter<String, Report> {
 	@Override
-	public Report convert(String topic) {
-		return new Report(topic);
+	public Report convert(String id) {
+		return Report.builder().id(Long.parseLong(id)).build();
 	}
 }

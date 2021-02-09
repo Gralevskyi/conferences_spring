@@ -8,14 +8,21 @@
 	    <h3>Create topic</h3>
 			<form method="POST" th:action="@{/speaker/create}" th:object="${reportDto}" id="reportForm">
 				<div>
-					<lable for="topic">Topic: </label>
-					<input type="text" th:field="*{topic}"/>
+					<lable for="topicEn">TopicEn: </label>
+					<input type="text" th:field="*{topicEn}"/>
 					<span class="validationError"
-						th:if="${#fields.hasErrors('topic')}"
-						th:errors="*{topic}">Name Error</span><br/>			
+						th:if="${#fields.hasErrors('topicEn')}"
+						th:errors="*{topicEn}">Name Error</span><br/>
+							
+					<lable for="topicUk">TopicUk: </label>
+					<input type="text" th:field="*{topicUk}"/>
+					<span class="validationError"
+						th:if="${#fields.hasErrors('topicUk')}"
+						th:errors="*{topicUk}">Name Error</span><br/>
+								
 					<input type="hidden" th:field="*{accepted}" id="accepted">
 					<input type="hidden" th:field="*{creator}" id="creator">
-					<input type="hidden" th:field="*{speaker}" id="speaker">
+					<input type="hidden" th:field="*{speakerId}" id="speakerId">
 				</div>				
 				<input type="submit" value="Create report"/>
 			<form/>
