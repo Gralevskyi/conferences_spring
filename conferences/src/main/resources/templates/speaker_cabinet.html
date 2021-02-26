@@ -6,21 +6,21 @@
 		<header th:insert="fragments.html :: header"> </header>
 			<ul class="navbar">
 				<form  th:action="@{/speaker/pastevents}" method="GET">
-			 		<input type="submit" value="Watch my past events"/>
+			 		<input type="submit" th:value="#{speaker.watch.past}"/>
 				</form>
 				<form  th:action="@{/speaker/create}" method="GET">
-				 	<input type="submit" value="Create report"/>
+				 	<input type="submit" th:value="#{index.moderator.createreport}"/>
 				</form>
 			</ul>
 			
 			
-			<p>My accepted topics<p>
+			<h3 th:text="#{speaker.accepted}">My accepted topics</h3>
 			<ul th:each="report : ${reports}">
-				<li th:if="${reports.empty}">Accepted reports are not available</li>
+				<li th:if="${reports.empty}"><span th:text="#{speaker.no.repots}"></span></li>
 				<li th:if="${report.accepted}"><span th:text="${report.localTopic}">Report topic</span></li>
 			</ul>
-		
-			<p>My not accepted topics</p>
+			<br>
+			<h3 th:text="#{speaker.no.accepted}">My not accepted topics</h3>
 			<form method="POST" th:action="@{/speaker/reports}"  th:object="${speaker}" id="reports">
 		        <ul>
 		            <li th:if="${!report.accepted}" th:each="report : ${reports}">
@@ -30,8 +30,8 @@
 		                </div>
 		            </li>
 		        </ul>
-		        <button type="submit" name="action" value="accept">Accept</button>
-		    	<button type="submit" name="action" value="refuse">Refuse</button>
+		        <button type="submit" name="action" value="accept" th:text="#{speaker.accept}">Accept</button>
+		    	<button type="submit" name="action" value="refuse" th:text="#{speaker.refuse}">Refuse</button>
 		    </form>
 		    <script th:src="@{/static/js/custom.js}"></script>
 	</body>

@@ -45,4 +45,8 @@ public interface ReportRepository extends JpaRepository<Report, String> {
 	@Modifying
 	@Query(value = "UPDATE reports r SET r.speaker = ?1 WHERE r.topic_en = ?2 OR r.topic_uk = ?2", nativeQuery = true)
 	void setSpeaker(long speakerId, String localTopic);
+
+	@Modifying
+	@Query(value = "UPDATE reports r SET r.speaker = NULL WHERE r.topic_en = ?1 OR r.topic_uk = ?1", nativeQuery = true)
+	void setSpeakerToNull(String localTopic);
 }

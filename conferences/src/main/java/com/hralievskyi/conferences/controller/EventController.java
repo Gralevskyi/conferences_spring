@@ -32,7 +32,10 @@ public class EventController {
 	}
 
 	@GetMapping
-	public String listEvents(Model model, @RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "4") Integer size, @RequestParam(defaultValue = "date") String sortBy) {
+	public String listEvents(Model model,
+			@RequestParam(defaultValue = "1") Integer page,
+			@RequestParam(defaultValue = "4") Integer size,
+			@RequestParam(defaultValue = "date") String sortBy) {
 		Page<Event> eventPage = eventService.findFuturePaginated(PageRequest.of(page - 1, size, Sort.by(SortByToLocal.convert(sortBy))));
 		eventPage.getContent().forEach(event -> event.setLocales());
 		model.addAttribute("eventPage", eventPage);

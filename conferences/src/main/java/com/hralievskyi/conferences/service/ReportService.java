@@ -44,7 +44,12 @@ public class ReportService {
 	@Transactional
 	public void setSpeakerAccepted(Report report) {
 		reportRepo.setAccepted(report.isAccepted(), report.getLocalTopic());
-		reportRepo.setSpeaker(report.getSpeaker().getId(), report.getLocalTopic());
+		if (report.getSpeaker() != null) {
+			reportRepo.setSpeaker(report.getSpeaker().getId(), report.getLocalTopic());
+		} else {
+			reportRepo.setSpeakerToNull(report.getLocalTopic());
+		}
+
 	}
 
 	public Report save(Report report) {
@@ -60,13 +65,17 @@ public class ReportService {
 	}
 
 	public void setAcceptedFor(Set<Report> reports) {
-		List<Long> topics = reports.stream().map(Report::getId).collect(Collectors.toList());
-		reportRepo.setAccepted(topics);
+		if (reports != null) {
+			List<Long> topics = reports.stream().map(Report::getId).collect(Collectors.toList());
+			reportRepo.setAccepted(topics);
+		}
 	}
 
 	public void clearSpeaker(Set<Report> reports) {
-		List<Long> reportId = reports.stream().map(Report::getId).collect(Collectors.toList());
-		reportRepo.setSpeakerToNull(reportId);
+		if (reports != null) {
+			List<Long> reportId = reports.stream().map(Report::getId).collect(Collectors.toList());
+			reportRepo.setSpeakerToNull(reportId);
+		}
 	}
 
 	public List<Report> setSpeakerReportsToNull(List<Report> reports) {

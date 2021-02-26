@@ -22,11 +22,11 @@ import lombok.Setter;
 
 public class ReportDto {
 	@NotNull
-	@Size(min = 5, max = 50, message = "{report.create.topic}")
+	@Size(min = 5, max = 50, message = "Name must be at least 5 characters long")
 	private String topicEn;
 
 	@NotNull
-	@Size(min = 5, max = 50, message = "{report.create.topic}")
+	@Size(min = 5, max = 50, message = "Name must be at least 5 characters long")
 	private String topicUk;
 
 	private boolean accepted;

@@ -48,7 +48,7 @@ public class ModeratorController {
 	public String createEvent(Model model, @Valid EventCreateDto eventCreateDto, Errors errors) {
 		if (errors.hasErrors()) {
 			model.addAttribute("eventDto", eventCreateDto);
-			return "createevent";
+			return "event_create";
 		}
 		moderatorService.createEvent(eventCreateDto.toEvent());
 		return "redirect:/";
@@ -95,7 +95,7 @@ public class ModeratorController {
 	@PostMapping("/addreports/event/{id}")
 	public String addReportsToEvent(Event event, @PathVariable(value = "id") long eventid) {
 		eventService.addNewReports(event);
-		return "redirect:/" + eventid;
+		return "redirect:/";
 	}
 
 	@GetMapping("/reports")

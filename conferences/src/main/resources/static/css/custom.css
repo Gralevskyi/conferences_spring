@@ -1,6 +1,8 @@
 body {
   background-color: #ccffff;
   font-family: Arial, Helvetica, sans-serif;
+  padding:0;
+  margin:0;
 }
 
 #eventForm {
@@ -15,22 +17,60 @@ body {
   overflow: hidden;
   background-color: #e9e9e9;
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 10px 0px 0px 10px;
+  
 }
 
 .navbar ul {
   list-style-type: none;
-  margin: 0;
-  padding: 0;
 }
 
 .navbar li {
   display: inline;
 }
+
 .navbar form {
-  display: inline;
+	margin:5px 5px 5px 5px;
+	display: inline;
 }
+
+.lang{
+	padding: 5px;
+}
+
 .page_numbers {
 	display: inline;
+}
+
+.center {
+	text-align: center;
+	vertical-align: middle;
+	
+}
+
+#registerForm > fieldset {
+	display: inline;
+}
+
+#registerForm > input[type=submit] {
+	margin-top: 5px;
+}
+
+#nameForm > fieldset {
+	display: inline;
+}
+
+#nameForm > input[type=submit] {
+	margin-top: 5px;
+}
+
+#reportForm > fieldset {
+	display: inline;
+}
+
+#reportForm > input[type=submit] {
+	margin-top: 5px;
 }
 
 .cust_table {

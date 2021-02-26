@@ -4,30 +4,37 @@
 	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body>
 		<header th:insert="fragments.html :: header"> </header>
-		<h1>Register</h1>
-		
-		<form method="POST" th:action="@{/register}" th:object="${registrationForm}" id="registerForm">
-		
-			<lable for="username">Email: </label>
-			<input type="text" th:field="*{username}"/>
-			<span style="color:red" class="validationError"
-				th:if="${#fields.hasErrors('username')}"
-				th:errors="*{username}">Name Error</span><br/>
-		
-			<lable for="password">Password: </label>
-			<input type="password" th:field="*{password}"/>
-			<span style="color:red" class="validationError"
-				th:if="${#fields.hasErrors('password')}"
-				th:errors="*{password}">Name Error</span><br/>
+		<h3 class="center" th:text="#{registration.form}">Register</h3>
+		<div class="center">
+			<form method="POST" th:action="@{/register}" th:object="${registrationForm}" id="registerForm">
+			
+				<fieldset>
+					<label for="username" th:text="#{registration.email}">Email:</label>
+					<input type="text" th:field="*{username}"/>
+					<span style="color:red" class="validationError"
+						th:if="${#fields.hasErrors('username')}"
+						th:errors="*{username}">Name Error</span><br/>
+				</fieldset><br>
 				
-			<lable for="passwordConfirmation">Comfirm password: </label>
-			<input type="password" th:field="*{passwordConfirmation}"/>
-			<span style="color:red" class="validationError"
-				th:if="${#fields.hasErrors('passwordConfirmation')}"
-				th:errors="*{passwordConfirmation}">Name Error</span><br/><br/>
+				<fieldset>
+				<label for="password" th:text="#{registration.password}">Password: </label>
+				<input type="password" th:field="*{password}"/>
+				<span style="color:red" class="validationError"
+					th:if="${#fields.hasErrors('password')}"
+					th:errors="*{password}">Name Error</span><br/>
+				</fieldset><br>
 				
-			<input type="submit" value="Register"/>
-		<form/><br/>
+				<fieldset>
+				<label for="passwordConfirmation" th:text="#{registration.password.confirm}">Comfirm password: </label>
+				<input type="password" th:field="*{passwordConfirmation}"/>
+				<span style="color:red" class="validationError"
+					th:if="${#fields.hasErrors('passwordConfirmation')}"
+					th:errors="*{passwordConfirmation}">Name Error</span><br/><br/>
+				</fieldset><br>
+				
+				<input type="submit" th:value="#{registration.button}"/>
+			</form>
+		</div>
 
 		<script th:src="@{/static/js/custom.js}"></script>
 	</body>

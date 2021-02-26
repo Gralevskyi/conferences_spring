@@ -3,10 +3,10 @@
 	  xmlns:th="http://www.thymeleaf.org">
 	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body>
-		<header th:insert="fragments.html :: header"> </header>
+		<div th:replace="fragments.html :: header"> </div>
 		 
 		 <div>
-		 	<ul class="navbar">
+		 	<ul class="navbar ">
 		 		<li>
 		       		<form  sec:authorize="hasRole('ROLE_MODERATOR')" th:action="@{/moderator/event/create}" method="GET">
 			 			<input type="submit" th:value="#{index.moderator.createevent}"/>
@@ -37,7 +37,7 @@
 		            <th><a th:href="@{/(sortBy='name')}" th:text="#{index.table.eventname}"> Name </a></th>
 		            <th><a th:href="@{/(sortBy='place')}" th:text="#{index.table.place}"> Place </a></th>
 		            <th><a th:href="@{/(sortBy='date')}" th:text="#{index.table.date}"> Date </a></th>
-		            <th><a th:href="@{/(sortBy='subscr_users')}" th:text="#{index.table.subscribed}"> Subscribed </a></th>
+		            <th><a sec:authorize="hasRole('ROLE_MODERATOR')" th:href="@{/(sortBy='subscr_users')}" th:text="#{index.table.subscribed}"> Subscribed </a></th>
 		            <th th:text="#{index.table.reportcount}"> Report count </th>
 		            <th sec:authorize="hasRole('ROLE_MODERATOR')" th:text="#{index.table.update}">Update</th>
 		            <th sec:authorize="hasRole('ROLE_MODERATOR')" th:text="#{index.table.addreports}">Add new reports</th>
@@ -51,7 +51,7 @@
 		            <td><a th:href="@{eventdetails/{id}(id = ${event.id})}"><span th:text="${event.localName}"> Name </span></a></td>
 		            <td><span th:text="${event.localPlace}"> Place </span></td>
 		            <td><span th:text="${event.date}"> Date </span></td>
-		            <td><span th:text="${event.subscrUsers}"> Subscribed </span></td>
+		            <td><span sec:authorize="hasRole('ROLE_MODERATOR')" th:text="${event.subscrUsers}"> Subscribed </span></td>
 		            <td>
 						<span th:with="convertedList=${#lists.toList(event.reports)}">
     						<span th:text="${#lists.size(convertedList)}"/>

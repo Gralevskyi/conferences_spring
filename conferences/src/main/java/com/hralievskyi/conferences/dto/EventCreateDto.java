@@ -25,17 +25,17 @@ import lombok.Setter;
 public class EventCreateDto {
 
 	@NotNull
-	@Size(min = 5, message = "{event.create.name}")
+	@Size(min = 5, message = "Event name must be at least 5 characters long")
 	String nameEn;
 
 	@NotNull
-	@Size(min = 5, message = "{event.create.name}")
+	@Size(min = 5, message = "Event name must be at least 5 characters long")
 	String nameUk;
 
-	@NotBlank(message = "{event.create.place}")
+	@NotBlank(message = "Place is required")
 	String placeEn;
 
-	@NotBlank(message = "{event.create.place}")
+	@NotBlank(message = "Place is required")
 	String placeUk;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -5,27 +5,32 @@
 	<body>
 		<header th:insert="fragments.html :: header"> </header>
 	
-	    <h3>Create topic</h3>
-			<form method="POST" th:action="@{/speaker/create}" th:object="${reportDto}" id="reportForm">
-				<div>
-					<lable for="topicEn">TopicEn: </label>
-					<input type="text" th:field="*{topicEn}"/>
-					<span class="validationError"
-						th:if="${#fields.hasErrors('topicEn')}"
-						th:errors="*{topicEn}">Name Error</span><br/>
-							
-					<lable for="topicUk">TopicUk: </label>
-					<input type="text" th:field="*{topicUk}"/>
-					<span class="validationError"
-						th:if="${#fields.hasErrors('topicUk')}"
-						th:errors="*{topicUk}">Name Error</span><br/>
-								
+	    <h3 class="center" th:text="#{index.moderator.createreport}">Create report</h3>
+	    
+	    <div class="center">
+				<form method="POST" th:action="@{/speaker/create}" th:object="${reportDto}" id="reportForm">
+					<fieldset>
+						<label for="topicEn" th:text="#{report.topic.en}">Topic Eng: </label>
+						<input type="text" th:field="*{topicEn}"/>
+						<span class="validationError"
+							th:if="${#fields.hasErrors('topicEn')}"
+							th:errors="*{topicEn}">Name Error</span><br/>			
+					</fieldset><br>
+					
+					<fieldset>
+						<label for="topicUk" th:text="#{report.topic.uk}">Topic Ukr: </label>
+						<input type="text" th:field="*{topicUk}"/>
+						<span class="validationError"
+							th:if="${#fields.hasErrors('topicUk')}"
+							th:errors="*{topicUk}">Name Error</span>
+					</fieldset><br>
+									
 					<input type="hidden" th:field="*{accepted}" id="accepted">
 					<input type="hidden" th:field="*{creator}" id="creator">
 					<input type="hidden" th:field="*{speakerId}" id="speakerId">
-				</div>				
-				<input type="submit" value="Create report"/>
-			<form/>
+					<input type="submit" th:value="#{index.moderator.createreport}"/>
+				</form>
+			</div>
 			<script th:src="@{/static/js/custom.js}"></script>
 	</body>
 </html>

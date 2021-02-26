@@ -4,48 +4,65 @@
 	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body>
 		<header th:insert="fragments.html :: header"> </header>
-		<h3>Update event</h3>
-		<form method="POST" th:action="@{/moderator/update/event/{id}(id = ${event.id})}" th:object="${event}" id="event">
-			<lable for="name">id: </label>
-			<p><span id="eventid" th:text="${id}"> Id </span></p>
-			
-			<lable for="nameEn">NameEn: </label>
-			<input type="text" th:field="*{nameEn}"/>
-			<span class="validationError"
-				th:if="${#fields.hasErrors('nameEn')}"
-				th:errors="*{nameEn}">Name Error</span><br/>
-				
-			<lable for="nameUk">NameUk: </label>
-			<input type="text" th:field="*{nameUk}"/>
-			<span class="validationError"
-				th:if="${#fields.hasErrors('nameUk')}"
-				th:errors="*{nameUk}">Name Error</span><br/>
+		<h3 class="center" th:text="#{event.update}">Update event</h3>
 		
-			<lable for="placeEn">PlaceEn: </label>
-			<input type="text" th:field="*{placeEn}"/>
-			<span class="validationError"
-				th:if="${#fields.hasErrors('placeEn')}"
-				th:errors="*{placeEn}">Name Error</span><br/>
+		<div class="center">
+			<form method="POST" th:action="@{/moderator/update/event/{id}(id = ${event.id})}" th:object="${event}" id="eventForm">
 				
-			<lable for="placeUk">Place: </label>
-			<input type="text" th:field="*{placeUk}"/>
-			<span class="validationError"
-				th:if="${#fields.hasErrors('placeUk')}"
-				th:errors="*{placeUk}">Name Error</span><br/>
+				<fieldset>
+					<p> id: <span th:text="${id}"></span></p>
+				</fieldset>
 				
-			<lable for="date">Date: </label>
-			<input type="date" th:text="${#temporals.format(localDate, 'yyyy-MM-dd')}" th:field="*{date}"/>
-			<span class="validationError"
-				th:if="${#fields.hasErrors('date')}"
-				th:errors="*{date}">Name Error</span><br/>
+				<fieldset>
+					<label for="nameEn" th:text="#{event.name.en}">Name Eng: </label>
+					<input type="text" th:field="*{nameEn}"/>
+					<span class="validationError"
+						th:if="${#fields.hasErrors('nameEn')}"
+						th:errors="*{nameEn}">Name Error</span><br/>
+				</fieldset><br>
 				
-			<lable for="time">Time: </label>
-			<input type="time" th:text="${#temporals.format(localTime, 'HH-mm')}" th:field="*{time}"/>
-			<span class="validationError"
-				th:if="${#fields.hasErrors('time')}"
-				th:errors="*{time}">Name Error</span><br/>
-			<input type="submit" value="Update event"/>
-		<form/>
+				<fieldset>
+					<label for="nameUk" th:text="#{event.name.uk}">Name Ukr: </label>
+					<input type="text" th:field="*{nameUk}"/>
+					<span class="validationError"
+						th:if="${#fields.hasErrors('nameUk')}"
+						th:errors="*{nameUk}">Name Error</span><br/>
+				</fieldset><br>
+				
+				<fieldset>	
+					<label for="placeEn" th:text="#{event.place.en}">Place Eng: </label>
+					<input type="text" th:field="*{placeEn}"/>
+					<span class="validationError"
+						th:if="${#fields.hasErrors('placeEn')}"
+						th:errors="*{placeEn}">Name Error</span><br/>
+				</fieldset><br>
+				
+				<fieldset>
+					<label for="placeUk" th:text="#{event.place.uk}">Place Ukr: </label>
+					<input type="text" th:field="*{placeUk}"/>
+					<span class="validationError"
+						th:if="${#fields.hasErrors('placeUk')}"
+						th:errors="*{placeUk}">Name Error</span><br/>
+				</fieldset><br>
+				
+				<fieldset>	
+					<label for="date" th:text="#{index.table.date}">Date: </label>
+					<input type="date" th:text="${#temporals.format(localDate, 'yyyy-MM-dd')}" th:field="*{date}"/>
+					<span class="validationError"
+						th:if="${#fields.hasErrors('date')}"
+						th:errors="*{date}">Name Error</span><br/>
+				</fieldset><br>
+				
+				<fieldset>	
+					<label for="time" th:text="#{event.time}">Time: </label>
+					<input type="time" th:text="${#temporals.format(localTime, 'HH-mm')}" th:field="*{time}"/>
+					<span class="validationError"
+						th:if="${#fields.hasErrors('time')}"
+						th:errors="*{time}">Name Error</span><br/>
+				</fieldset><br>	
+				<input type="submit" th:value="#{event.update}"/>
+			</form>
+		</div>
 		<script th:src="@{/static/js/custom.js}"></script>
 	</body>
 </html>

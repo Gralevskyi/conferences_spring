@@ -12,13 +12,13 @@
 		<table id="topictable" class="cust_table">
 			<thead>
 				<tr>
-					<th> Topic </th>
-					<th> Creator </th>
-					<th> Is Accepted </th>
-					<th> Speaker </th>
-					<th> Set Accepted </th>
-					<th> Set new Speaker </th>
-					<th> Update </th>
+					<th th:text="#{report.topic}"> Topic </th>
+					<th th:text="#{moderator.creator}"> Creator </th>
+					<th th:text="#{moderator.is.accepted}"> Is Accepted </th>
+					<th th:text="#{report.speaker}"> Speaker </th>
+					<th th:text="#{moderator.set.accepted}"> Set Accepted </th>
+					<th th:text="#{moderator.set.speaker}"> Set new Speaker </th>
+					<th th:text="#{index.table.update}"> Update </th>
 				</tr>
 			</thead>
 			<tbody>
@@ -36,7 +36,7 @@
 					<td class="speakers"></td>
 					<td>
 						<div>
-							<button th:onclick="updateReport(this)">Update</button>								
+							<button th:onclick="updateReport(this)" th:text="#{index.table.update}">Update</button>								
 						</div>
 					</td>
 				</tr>

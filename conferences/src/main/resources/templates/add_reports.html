@@ -4,11 +4,11 @@
 	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body>
 		<header th:insert="fragments.html :: header"> </header>
-		<p>Add Reports</p>
+		<p th:text="#{index.table.addreports}">Add Reports</p>
 		<form method="POST" th:action="@{/moderator/addreports/event/{id}(id = ${event.id})}"  th:object="${event}" id="reports">
 	        <ul>
 	        	<li th:if="${reports.empty}">
-		            <p> No Reports Available </p>
+		            <p th:text="#{event.reports.empty}"> No Reports Available </p>
 		        </li>
 	            <li th:each="report : ${reports}">
 	                <div>
@@ -17,7 +17,7 @@
 	                </div>
 	            </li>
 	        </ul>
-	        <input type="submit" value="Add reports"/>
+	        <input type="submit" th:value="#{index.table.addreports}"/>
 	    </form>
 		<script th:src="@{/static/js/custom.js}"></script>
 	</body>

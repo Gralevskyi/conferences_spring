@@ -4,32 +4,51 @@
 	<head th:insert="fragments.html :: styles_and_scripts"></head>
 	<body>
 		<header th:insert="fragments.html :: header"> </header>
-		<h3>My Subscribed Events</h3>	
-		</br>
+		<h3 th:text="#{user.my.events}">My Subscribed Events</h3>	
+		<br>
 		<ul th:each="event : ${events}">
-			<li th:if="${events.empty}">Events are not available</li>
+			<li th:if="${events.empty}" th:text="#{user.events.empty}">Events are not available</li>
 			<li>
-				<p><span th:text="${event.localName}"> Name </span></p>
-				<p><span th:text="${event.localPlace}"> Place </span></p>
-				<p><span th:text="${event.date}"> Date </span></p>
-				<p><span th:text="${event.time}"> Time </span></p>
-				<p>Reports</p>
-				<table>
+				<fieldset>
+				<table class="cust_table">
 					<thead>
-						<tr>Report topic</tr>
-						<tr>Speaker</tr>
+						<tr>
+							<th th:text="#{index.table.eventname}"> Name </th>
+				            <th th:text="#{index.table.place}"> Place </th>
+				            <th th:text="#{index.table.date}"> Date </th>
+				            <th th:text="#{event.time}"> Time </th>
+						</tr>
 					</thead>
 					<tbody>
-						<tr th:if="${event.reports.empty}">
-	            			<td colspan="2"> No Reports Available </td>
-	        			</tr>
-						<tr th:each="report : ${event.reports}">
-							<td><span th:text="${report.localTopic}" >Topic</span></td>
-							<td><span th:text="${report.speaker.localName}" >Speaker</span></td>
+						<tr>
+							<td><span th:text="${event.localName}"> Name </span></td>
+							<td><span th:text="${event.localPlace}"> Place </span></td>
+							<td><span th:text="${event.date}"> Date </span></td>
+							<td><span th:text="${event.time}"> Time </span></td>
 						</tr>
 					</tbody>
 				</table>
-			</li>
+				
+				<p th:text="#{report.reports}">Reports</p>
+				<table class="cust_table">
+					<thead>
+						<tr>
+							<th th:text="#{report.topic}">Report topic</th>
+							<th th:text="#{report.speaker}">Speaker</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${event.reports.empty}">
+	            			<td colspan="2" th:text="#{event.reports.empty}"> No Reports Available </td>
+	        			</tr>
+						<tr th:each="report : ${event.reports}">
+							<td><span th:text="${report.LocalTopic}" >Topic</span></td>
+							<td><span th:text="${report.speaker?.localName}" >Speaker</span></td>
+						</tr>
+					</tbody>
+				</table>
+				</fieldset>
+			</li>			
 		</ul>
 		<script th:src="@{/static/js/custom.js}"></script>
 	</body>
