@@ -16,7 +16,10 @@ import com.hralievskyi.conferences.repository.ReportRepository;
 import com.hralievskyi.conferences.repository.SpeakerRepository;
 import com.hralievskyi.conferences.repository.UserRepository;
 
+import lombok.extern.log4j.Log4j2;
+
 @Service
+@Log4j2
 public class SpeakerService {
 	private SpeakerRepository speakerRepo;
 	private UserRepository userRepo;
@@ -30,10 +33,12 @@ public class SpeakerService {
 	}
 
 	public Iterable<Speaker> getAll() {
+		log.debug("starts");
 		return Optional.ofNullable(speakerRepo.findAll()).orElse(new ArrayList<Speaker>());
 	}
 
 	public Iterable<Speaker> getAllProxy() {
+		log.debug("starts");
 		Iterable<Speaker> speakers = Optional.ofNullable(speakerRepo.findAll()).orElse(new ArrayList<Speaker>());
 		speakers.forEach(speaker -> {
 			speaker.setLocalName();
@@ -44,6 +49,7 @@ public class SpeakerService {
 	}
 
 	public Iterable<Report> getReports(String speakername) {
+		log.debug("starts");
 		Speaker speaker = speakerRepo.findByUserName(speakername);
 		Iterable<Report> reports = Optional.ofNullable(speaker.getReports()).orElse(new HashSet<Report>());
 		reports.forEach(report -> report.setLocalTopic());
@@ -52,6 +58,7 @@ public class SpeakerService {
 
 	@Transactional
 	public Report createReport(Report report, String username) {
+		log.debug("starts");
 		User user = userRepo.findByUsername(username);
 		report.setSpeaker(Speaker.builder().id(user.getId()).build());
 		return reportRepo.save(report);

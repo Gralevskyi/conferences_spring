@@ -21,9 +21,11 @@ import com.hralievskyi.conferences.entity.user.Role;
 import com.hralievskyi.conferences.entity.user.User;
 import com.hralievskyi.conferences.repository.UserRepository;
 
+import lombok.extern.log4j.Log4j2;
+
 @Service
-@Transactional // org.springframework.security.authentication.InternalAuthenticationServiceException:
-				// failed to lazily initialize a collection of role
+@Transactional
+@Log4j2
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private UserRepository userRepo;
@@ -35,18 +37,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		log.debug("starts");
 		User user = userRepo.findByUsername(username);
 		if (user != null) {
 			return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapToGrantedAuthorities(user.getRoles()));
 		}
+		log.error("user " + username + " not found");
 		throw new UsernameNotFoundException("User '" + username + "' not found");
 	}
 
 	private List<GrantedAuthority> mapToGrantedAuthorities(Set<Role> set) {
+		log.debug("starts");
 		return set.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 	}
 
 	public String getCurrentUsername() {
+		log.debug("starts");
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			String currentUserName = authentication.getName();

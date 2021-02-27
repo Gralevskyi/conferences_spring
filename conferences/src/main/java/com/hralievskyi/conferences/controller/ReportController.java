@@ -14,9 +14,12 @@ import com.hralievskyi.conferences.dto.ReportDto;
 import com.hralievskyi.conferences.service.ReportService;
 import com.hralievskyi.conferences.service.SpeakerService;
 
+import lombok.extern.log4j.Log4j2;
+
 @RestController
 @RequestMapping(path = "/report", produces = "application/json")
 @CrossOrigin(origins = "*")
+@Log4j2
 public class ReportController {
 
 	private SpeakerService speakerService;
@@ -39,6 +42,7 @@ public class ReportController {
 			reportService.setSpeakerAccepted(reportDto.toReport(reportDto.getSpeakerId()));
 			return new ResponseEntity<>("OK", HttpStatus.OK);
 		} catch (Exception e) {
+			log.error("error during updating report");
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}

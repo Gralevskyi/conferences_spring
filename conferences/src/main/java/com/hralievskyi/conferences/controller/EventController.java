@@ -21,8 +21,11 @@ import com.hralievskyi.conferences.service.EventService;
 import com.hralievskyi.conferences.util.AlreadySubscribed;
 import com.hralievskyi.conferences.util.SortByToLocal;
 
+import lombok.extern.log4j.Log4j2;
+
 @Controller
 @RequestMapping("/")
+@Log4j2
 public class EventController {
 	private EventService eventService;
 
@@ -36,6 +39,7 @@ public class EventController {
 			@RequestParam(defaultValue = "1") Integer page,
 			@RequestParam(defaultValue = "4") Integer size,
 			@RequestParam(defaultValue = "date") String sortBy) {
+		log.debug("started with sordtBy " + sortBy);
 		Page<Event> eventPage = eventService.findFuturePaginated(PageRequest.of(page - 1, size, Sort.by(SortByToLocal.convert(sortBy))));
 		eventPage.getContent().forEach(event -> event.setLocales());
 		model.addAttribute("eventPage", eventPage);
@@ -45,6 +49,7 @@ public class EventController {
 
 	@GetMapping("/eventdetails/{id}")
 	public String getEventDetails(Model model, @PathVariable(value = "id") long eventid, Principal principal) {
+		log.debug("started with eventid: " + eventid);
 		model.addAttribute("errorMessage", "");
 		model.addAttribute("alreadySubsribed", false);
 		model.addAttribute("event", eventService.findByIdWithTopics(eventid));
@@ -56,6 +61,7 @@ public class EventController {
 		try {
 			eventService.subscribeUser(principal.getName(), eventid);
 		} catch (AlreadySubscribed ex) {
+			log.info("already subscribed user");
 			model.addAttribute("errorMessage", ex.getMessage());
 			model.addAttribute("alreadySubsribed", true);
 			model.addAttribute("event", eventService.findByIdWithTopics(eventid));

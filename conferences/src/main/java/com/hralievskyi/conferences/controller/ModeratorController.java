@@ -22,8 +22,11 @@ import com.hralievskyi.conferences.service.ModeratorService;
 import com.hralievskyi.conferences.service.ReportService;
 import com.hralievskyi.conferences.service.SpeakerService;
 
+import lombok.extern.log4j.Log4j2;
+
 @Controller
 @RequestMapping("/moderator")
+@Log4j2
 public class ModeratorController {
 	private ModeratorService moderatorService;
 	private EventService eventService;
@@ -47,10 +50,13 @@ public class ModeratorController {
 	@PostMapping("/event/create")
 	public String createEvent(Model model, @Valid EventCreateDto eventCreateDto, Errors errors) {
 		if (errors.hasErrors()) {
+			log.info("dto nameEn: " + eventCreateDto.getNameEn());
+			log.info("errors on event dto: " + errors);
 			model.addAttribute("eventDto", eventCreateDto);
 			return "event_create";
 		}
 		moderatorService.createEvent(eventCreateDto.toEvent());
+		log.debug("finish");
 		return "redirect:/";
 	}
 
@@ -64,6 +70,7 @@ public class ModeratorController {
 	@PostMapping("/report/create")
 	public String createReport(Model model, @Valid ReportDto reportDto, Errors errors) {
 		if (errors.hasErrors()) {
+			log.info("errors on report dto: " + errors);
 			model.addAttribute("reportDto", reportDto);
 			model.addAttribute("speakers", speakerService.getAllProxy());
 			return "report_create";

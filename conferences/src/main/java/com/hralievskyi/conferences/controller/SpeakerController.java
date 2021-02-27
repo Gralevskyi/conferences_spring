@@ -15,22 +15,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.hralievskyi.conferences.dto.ReportDto;
 import com.hralievskyi.conferences.entity.user.Speaker;
 import com.hralievskyi.conferences.service.EventService;
-import com.hralievskyi.conferences.service.ModeratorService;
 import com.hralievskyi.conferences.service.ReportService;
 import com.hralievskyi.conferences.service.SpeakerService;
 
+import lombok.extern.log4j.Log4j2;
+
 @Controller
 @RequestMapping("/speaker")
+@Log4j2
 public class SpeakerController {
-	private ModeratorService moderatorService;
 	private ReportService reportService;
 	private SpeakerService speakerService;
 	private EventService eventService;
 
 	@Autowired
-	public SpeakerController(ModeratorService moderatorService, ReportService reportService, SpeakerService speakerService, EventService eventService) {
+	public SpeakerController(ReportService reportService, SpeakerService speakerService, EventService eventService) {
 		this.reportService = reportService;
-		this.moderatorService = moderatorService;
 		this.speakerService = speakerService;
 		this.eventService = eventService;
 	}
@@ -71,6 +71,7 @@ public class SpeakerController {
 	@PostMapping(path = "/create")
 	public String createReport(Model model, @Valid ReportDto reportDto, Errors errors, Principal principal) {
 		if (errors.hasErrors()) {
+			log.info("errors in report dto");
 			model.addAttribute("reportDto", reportDto);
 			return "speaker_create";
 		}

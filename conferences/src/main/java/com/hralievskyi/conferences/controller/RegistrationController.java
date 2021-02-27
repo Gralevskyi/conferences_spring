@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.hralievskyi.conferences.dto.RegistrationForm;
 import com.hralievskyi.conferences.service.UserService;
 
+import lombok.extern.log4j.Log4j2;
+
 /*handle registration of new user*/
 
 @Controller
 @RequestMapping("/register")
+@Log4j2
 public class RegistrationController {
 
 	@Autowired
@@ -31,6 +34,7 @@ public class RegistrationController {
 	@PostMapping
 	public String processRegistration(Model model, @Valid RegistrationForm registrationForm, Errors errors) {
 		if (errors.hasErrors()) {
+			log.info("errors in registration form");
 			model.addAttribute("registrationForm", registrationForm);
 			return "registration";
 		}
